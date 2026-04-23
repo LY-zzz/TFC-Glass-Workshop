@@ -5,6 +5,7 @@ import com.ly.tfcglassworkshop.registry.ModBlockEntities;
 import com.ly.tfcglassworkshop.registry.ModCreativeTabs;
 import com.ly.tfcglassworkshop.registry.ModItems;
 import com.ly.tfcglassworkshop.registry.ModMenuTypes;
+import com.ly.tfcglassworkshop.registry.ModRecipeTypes;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -28,6 +29,7 @@ public class TFCGlassWorkshop {
         ModItems.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
         ModMenuTypes.register(modEventBus);
+        ModRecipeTypes.register(modEventBus);
 
         context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
