@@ -8,7 +8,7 @@
   },
   "min_temp": 900.0,
   "result": {
-    "item": "tfc:poured_glass",
+    "item": "minecraft:glass_pane",
     "count": 4
   }
 }
