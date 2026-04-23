@@ -1,5 +1,5 @@
 {
   "block.tfc_glass_workshop.glass_press": "Glass Press",
-  "itemGroup.tfc_glass_workshop.main": "TerraFirmaCraft: Glass Workshop",
-  "message.tfc_glass_workshop.glass_press.unavailable": "The glass press is not ready yet."
+  "container.tfc_glass_workshop.glass_press": "Glass Press",
+  "itemGroup.tfc_glass_workshop.main": "TerraFirmaCraft: Glass Workshop"
 }

@@ -3,7 +3,7 @@ package com.ly.tfcglassworkshop.block;
 import com.ly.tfcglassworkshop.blockentity.GlassPressBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.network.NetworkHooks;
 
 public class GlassPressBlock extends HorizontalDirectionalBlock implements EntityBlock {
     public GlassPressBlock(Properties properties) {
@@ -36,7 +37,11 @@ public class GlassPressBlock extends HorizontalDirectionalBlock implements Entit
             return InteractionResult.SUCCESS;
         }
 
-        player.displayClientMessage(Component.translatable("message.tfc_glass_workshop.glass_press.unavailable"), true);
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity instanceof GlassPressBlockEntity glassPress && player instanceof ServerPlayer serverPlayer) {
+            NetworkHooks.openScreen(serverPlayer, glassPress, pos);
+        }
+
         return InteractionResult.CONSUME;
     }
 
