@@ -1,6 +1,7 @@
 package com.ly.tfcglassworkshop.registry;
 
 import com.ly.tfcglassworkshop.TFCGlassWorkshop;
+import com.ly.tfcglassworkshop.block.GlassPressBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -13,7 +14,7 @@ import net.minecraftforge.registries.RegistryObject;
 public final class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, TFCGlassWorkshop.MOD_ID);
 
-    public static final RegistryObject<Block> GLASS_PRESS = BLOCKS.register("glass_press", () -> new Block(
+    public static final RegistryObject<Block> GLASS_PRESS = BLOCKS.register("glass_press", () -> new GlassPressBlock(
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.METAL)
                     .requiresCorrectToolForDrops()

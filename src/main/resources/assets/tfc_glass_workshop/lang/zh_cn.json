@@ -1,4 +1,5 @@
 {
   "block.tfc_glass_workshop.glass_press": "玻璃压制成型机",
-  "itemGroup.tfc_glass_workshop.main": "群峦传说：玻璃工坊"
+  "itemGroup.tfc_glass_workshop.main": "群峦传说：玻璃工坊",
+  "message.tfc_glass_workshop.glass_press.unavailable": "玻璃压制成型机尚未完成。"
 }
