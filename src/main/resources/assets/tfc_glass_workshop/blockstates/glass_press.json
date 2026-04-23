@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "tfc_glass_workshop:block/glass_press"
+    }
+  }
+}
