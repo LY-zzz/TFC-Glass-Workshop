@@ -1,0 +1,43 @@
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+.gradle-home
+
+# other
+eclipse
+run
+
+# Files from Forge MDK
+forge*changelog.txt
+
+# Ignore Gradle compilation results
+/build/
+/.gradle/
+/.gradle-home/
+
+# Ignore runtime game data (save files, logs, configuration).
+/run/
+/bin/
+
+# Ignore IDE's proprietary configurations
+.vscode/
+.idea/
+*.iml
+
+# Ignore automatically generated source code
+/src/generated/
