@@ -3,6 +3,7 @@ package com.ly.tfcglassworkshop.menu;
 import com.ly.tfcglassworkshop.blockentity.GlassPressBlockEntity;
 import com.ly.tfcglassworkshop.registry.ModBlocks;
 import com.ly.tfcglassworkshop.registry.ModMenuTypes;
+import com.ly.tfcglassworkshop.registry.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -62,7 +63,11 @@ public class GlassPressMenu extends AbstractContainerMenu {
             if (!moveItemStackTo(stack, PLAYER_INVENTORY_START, PLAYER_INVENTORY_END, true)) {
                 return ItemStack.EMPTY;
             }
-        } else if (!moveItemStackTo(stack, GlassPressBlockEntity.INPUT_SLOT, GlassPressBlockEntity.OUTPUT_SLOT, false)) {
+        } else if (stack.is(ModTags.Items.PRESS_MOLDS)) {
+            if (!moveItemStackTo(stack, GlassPressBlockEntity.MOLD_SLOT, GlassPressBlockEntity.MOLD_SLOT + 1, false)) {
+                return ItemStack.EMPTY;
+            }
+        } else if (!moveItemStackTo(stack, GlassPressBlockEntity.INPUT_SLOT, GlassPressBlockEntity.INPUT_SLOT + 1, false)) {
             return ItemStack.EMPTY;
         }
 
@@ -81,8 +86,8 @@ public class GlassPressMenu extends AbstractContainerMenu {
     }
 
     private void addMachineSlots() {
-        addSlot(new SlotItemHandler(blockEntity.getInventory(), GlassPressBlockEntity.INPUT_SLOT, 44, 35));
-        addSlot(new SlotItemHandler(blockEntity.getInventory(), GlassPressBlockEntity.MOLD_SLOT, 80, 35));
+        addSlot(new InputSlot(blockEntity, 44, 35));
+        addSlot(new MoldSlot(blockEntity, 80, 35));
         addSlot(new OutputSlot(blockEntity, 116, 35));
     }
 
@@ -117,6 +122,33 @@ public class GlassPressMenu extends AbstractContainerMenu {
         @Override
         public boolean mayPlace(ItemStack stack) {
             return false;
+        }
+    }
+
+    private static class InputSlot extends SlotItemHandler {
+        InputSlot(GlassPressBlockEntity blockEntity, int x, int y) {
+            super(blockEntity.getInventory(), GlassPressBlockEntity.INPUT_SLOT, x, y);
+        }
+
+        @Override
+        public boolean mayPlace(ItemStack stack) {
+            return !stack.is(ModTags.Items.PRESS_MOLDS);
+        }
+    }
+
+    private static class MoldSlot extends SlotItemHandler {
+        MoldSlot(GlassPressBlockEntity blockEntity, int x, int y) {
+            super(blockEntity.getInventory(), GlassPressBlockEntity.MOLD_SLOT, x, y);
+        }
+
+        @Override
+        public boolean mayPlace(ItemStack stack) {
+            return stack.is(ModTags.Items.PRESS_MOLDS);
+        }
+
+        @Override
+        public int getMaxStackSize() {
+            return 1;
         }
     }
 }

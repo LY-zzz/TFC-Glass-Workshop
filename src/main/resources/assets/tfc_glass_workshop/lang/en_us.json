@@ -1,5 +1,11 @@
 {
   "block.tfc_glass_workshop.glass_press": "Glass Press",
   "container.tfc_glass_workshop.glass_press": "Glass Press",
+  "item.tfc_glass_workshop.plate_mold": "Plate Mold",
+  "item.tfc_glass_workshop.block_mold": "Block Mold",
+  "item.tfc_glass_workshop.bottle_mold": "Bottle Mold",
+  "item.tfc_glass_workshop.jar_mold": "Jar Mold",
+  "item.tfc_glass_workshop.lamp_glass_mold": "Lamp Glass Mold",
+  "item.tfc_glass_workshop.lens_mold": "Lens Mold",
   "itemGroup.tfc_glass_workshop.main": "TerraFirmaCraft: Glass Workshop"
 }

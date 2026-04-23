@@ -1,5 +1,11 @@
 {
   "block.tfc_glass_workshop.glass_press": "玻璃压制成型机",
   "container.tfc_glass_workshop.glass_press": "玻璃压制成型机",
+  "item.tfc_glass_workshop.plate_mold": "平板模具",
+  "item.tfc_glass_workshop.block_mold": "方块模具",
+  "item.tfc_glass_workshop.bottle_mold": "瓶型模具",
+  "item.tfc_glass_workshop.jar_mold": "罐型模具",
+  "item.tfc_glass_workshop.lamp_glass_mold": "灯罩模具",
+  "item.tfc_glass_workshop.lens_mold": "透镜模具",
   "itemGroup.tfc_glass_workshop.main": "群峦传说：玻璃工坊"
 }

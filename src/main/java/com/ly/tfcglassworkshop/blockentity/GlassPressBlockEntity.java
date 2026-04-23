@@ -2,12 +2,14 @@ package com.ly.tfcglassworkshop.blockentity;
 
 import com.ly.tfcglassworkshop.registry.ModBlockEntities;
 import com.ly.tfcglassworkshop.menu.GlassPressMenu;
+import com.ly.tfcglassworkshop.recipe.PressingRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -21,6 +23,11 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import java.util.Optional;
+
+import com.ly.tfcglassworkshop.registry.ModRecipeTypes;
+import com.ly.tfcglassworkshop.registry.ModTags;
+
 public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
     public static final int INPUT_SLOT = 0;
     public static final int MOLD_SLOT = 1;
@@ -30,7 +37,13 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
     private final ItemStackHandler inventory = new ItemStackHandler(SLOT_COUNT) {
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
-            return slot != OUTPUT_SLOT;
+            if (slot == OUTPUT_SLOT) {
+                return false;
+            }
+            if (slot == MOLD_SLOT) {
+                return stack.is(ModTags.Items.PRESS_MOLDS);
+            }
+            return !stack.is(ModTags.Items.PRESS_MOLDS);
         }
 
         @Override
@@ -47,6 +60,17 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
 
     public ItemStackHandler getInventory() {
         return inventory;
+    }
+
+    public Optional<PressingRecipe> getMatchingRecipe() {
+        if (level == null) {
+            return Optional.empty();
+        }
+
+        SimpleContainer container = new SimpleContainer(2);
+        container.setItem(INPUT_SLOT, inventory.getStackInSlot(INPUT_SLOT));
+        container.setItem(MOLD_SLOT, inventory.getStackInSlot(MOLD_SLOT));
+        return level.getRecipeManager().getRecipeFor(ModRecipeTypes.PRESSING_TYPE.get(), container, level);
     }
 
     @Override
