@@ -1,6 +1,7 @@
 package com.ly.tfcglassworkshop;
 
 import com.ly.tfcglassworkshop.registry.ModBlocks;
+import com.ly.tfcglassworkshop.registry.ModBlockEntities;
 import com.ly.tfcglassworkshop.registry.ModCreativeTabs;
 import com.ly.tfcglassworkshop.registry.ModItems;
 import com.mojang.logging.LogUtils;
@@ -22,6 +23,7 @@ public class TFCGlassWorkshop {
 
         modEventBus.addListener(this::commonSetup);
         ModBlocks.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
         ModItems.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
 
