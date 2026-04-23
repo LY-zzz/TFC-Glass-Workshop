@@ -1,8 +1,10 @@
 package com.ly.tfcglassworkshop.blockentity;
 
+import com.ly.tfcglassworkshop.TFCGlassWorkshop;
 import com.ly.tfcglassworkshop.registry.ModBlockEntities;
 import com.ly.tfcglassworkshop.menu.GlassPressMenu;
 import com.ly.tfcglassworkshop.recipe.PressingRecipe;
+import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -29,6 +31,7 @@ import com.ly.tfcglassworkshop.registry.ModRecipeTypes;
 import com.ly.tfcglassworkshop.registry.ModTags;
 
 public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
+    public static final int PRESS_TIME = 20;
     public static final int INPUT_SLOT = 0;
     public static final int MOLD_SLOT = 1;
     public static final int OUTPUT_SLOT = 2;
@@ -53,6 +56,7 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
     };
 
     private LazyOptional<IItemHandler> inventoryCapability = LazyOptional.of(() -> inventory);
+    private int progress;
 
     public GlassPressBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.GLASS_PRESS.get(), pos, state);
@@ -73,6 +77,29 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
         return level.getRecipeManager().getRecipeFor(ModRecipeTypes.PRESSING_TYPE.get(), container, level);
     }
 
+    public float getInputTemperature() {
+        return HeatCapability.getTemperature(inventory.getStackInSlot(INPUT_SLOT));
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, GlassPressBlockEntity blockEntity) {
+        Optional<PressingRecipe> recipe = blockEntity.getMatchingRecipe();
+        if (recipe.isPresent() && blockEntity.canProcess(recipe.get())) {
+            blockEntity.progress++;
+            if (blockEntity.progress >= PRESS_TIME) {
+                blockEntity.craft(recipe.get());
+                blockEntity.progress = 0;
+            }
+            setChanged(level, pos, state);
+        } else if (blockEntity.progress != 0) {
+            blockEntity.progress = 0;
+            setChanged(level, pos, state);
+        }
+    }
+
     @Override
     public Component getDisplayName() {
         return Component.translatable("container.tfc_glass_workshop.glass_press");
@@ -91,6 +118,48 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
                 inventory.setStackInSlot(slot, ItemStack.EMPTY);
             }
         }
+    }
+
+    private boolean canProcess(PressingRecipe recipe) {
+        ItemStack inputStack = inventory.getStackInSlot(INPUT_SLOT);
+        ItemStack moldStack = inventory.getStackInSlot(MOLD_SLOT);
+        ItemStack outputStack = inventory.getStackInSlot(OUTPUT_SLOT);
+        ItemStack recipeResult = recipe.getResult();
+
+        if (inputStack.isEmpty() || moldStack.isEmpty()) {
+            return false;
+        }
+        if (!recipe.matches(inputStack, moldStack)) {
+            return false;
+        }
+        if (!HeatCapability.has(inputStack) || HeatCapability.getTemperature(inputStack) < recipe.getMinTemperature()) {
+            return false;
+        }
+        if (outputStack.isEmpty()) {
+            return true;
+        }
+        if (!ItemStack.isSameItemSameTags(outputStack, recipeResult)) {
+            return false;
+        }
+
+        return outputStack.getCount() + recipeResult.getCount() <= outputStack.getMaxStackSize();
+    }
+
+    private void craft(PressingRecipe recipe) {
+        ItemStack inputStack = inventory.getStackInSlot(INPUT_SLOT);
+        ItemStack outputStack = inventory.getStackInSlot(OUTPUT_SLOT);
+        ItemStack recipeResult = recipe.getResult();
+
+        inputStack.shrink(1);
+        if (outputStack.isEmpty()) {
+            inventory.setStackInSlot(OUTPUT_SLOT, recipeResult);
+        } else {
+            outputStack.grow(recipeResult.getCount());
+            inventory.setStackInSlot(OUTPUT_SLOT, outputStack);
+        }
+
+        setChanged();
+        TFCGlassWorkshop.LOGGER.debug("Glass press completed recipe {}", recipe.getId());
     }
 
     @Override
@@ -124,11 +193,13 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         tag.put("Inventory", inventory.serializeNBT());
+        tag.putInt("Progress", progress);
     }
 
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
         inventory.deserializeNBT(tag.getCompound("Inventory"));
+        progress = tag.getInt("Progress");
     }
 }

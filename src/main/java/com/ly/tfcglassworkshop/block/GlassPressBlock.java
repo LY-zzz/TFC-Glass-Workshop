@@ -1,6 +1,7 @@
 package com.ly.tfcglassworkshop.block;
 
 import com.ly.tfcglassworkshop.blockentity.GlassPressBlockEntity;
+import com.ly.tfcglassworkshop.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,6 +12,8 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
@@ -48,6 +51,15 @@ public class GlassPressBlock extends HorizontalDirectionalBlock implements Entit
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new GlassPressBlockEntity(pos, state);
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        if (level.isClientSide || blockEntityType != ModBlockEntities.GLASS_PRESS.get()) {
+            return null;
+        }
+
+        return (tickLevel, tickPos, tickState, blockEntity) -> GlassPressBlockEntity.serverTick(tickLevel, tickPos, tickState, (GlassPressBlockEntity) blockEntity);
     }
 
     @Override
