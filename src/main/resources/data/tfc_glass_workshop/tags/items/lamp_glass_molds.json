@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "tfc_glass_workshop:lamp_glass_mold",
+    "tfc_glass_workshop:steel_lamp_glass_mold",
+    "tfc_glass_workshop:ceramic_lamp_glass_mold"
+  ]
+}

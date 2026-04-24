@@ -1,11 +1,11 @@
 {
   "replace": false,
   "values": [
-    "tfc_glass_workshop:plate_mold",
-    "tfc_glass_workshop:block_mold",
-    "tfc_glass_workshop:bottle_mold",
-    "tfc_glass_workshop:jar_mold",
-    "tfc_glass_workshop:lamp_glass_mold",
-    "tfc_glass_workshop:lens_mold"
+    "#tfc_glass_workshop:plate_molds",
+    "#tfc_glass_workshop:block_molds",
+    "#tfc_glass_workshop:bottle_molds",
+    "#tfc_glass_workshop:jar_molds",
+    "#tfc_glass_workshop:lamp_glass_molds",
+    "#tfc_glass_workshop:lens_molds"
   ]
 }

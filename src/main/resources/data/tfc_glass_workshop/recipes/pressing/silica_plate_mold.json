@@ -4,7 +4,7 @@
     "item": "tfc:silica_glass_batch"
   },
   "mold": {
-    "item": "tfc_glass_workshop:plate_mold"
+    "tag": "tfc_glass_workshop:plate_molds"
   },
   "min_temp": 900.0,
   "result": {

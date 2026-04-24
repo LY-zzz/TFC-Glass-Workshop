@@ -187,10 +187,12 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
 
     private void craft(PressingRecipe recipe) {
         ItemStack inputStack = inventory.getStackInSlot(INPUT_SLOT);
+        ItemStack moldStack = inventory.getStackInSlot(MOLD_SLOT);
         ItemStack outputStack = inventory.getStackInSlot(OUTPUT_SLOT);
         ItemStack recipeResult = recipe.getResult();
 
         inputStack.shrink(1);
+        damageMold(moldStack);
         if (outputStack.isEmpty()) {
             inventory.setStackInSlot(OUTPUT_SLOT, recipeResult);
         } else {
@@ -200,6 +202,20 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
 
         setChanged();
         TFCGlassWorkshop.LOGGER.debug("Glass press completed recipe {}", recipe.getId());
+    }
+
+    private void damageMold(ItemStack moldStack) {
+        if (!moldStack.isDamageableItem()) {
+            return;
+        }
+
+        int newDamage = moldStack.getDamageValue() + 1;
+        if (newDamage >= moldStack.getMaxDamage()) {
+            inventory.setStackInSlot(MOLD_SLOT, ItemStack.EMPTY);
+        } else {
+            moldStack.setDamageValue(newDamage);
+            inventory.setStackInSlot(MOLD_SLOT, moldStack);
+        }
     }
 
     @Override
