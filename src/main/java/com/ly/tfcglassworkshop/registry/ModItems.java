@@ -26,6 +26,12 @@ public final class ModItems {
     public static final RegistryObject<Item> STEEL_JAR_MOLD = registerMold("steel_jar_mold");
     public static final RegistryObject<Item> STEEL_LAMP_GLASS_MOLD = registerMold("steel_lamp_glass_mold");
     public static final RegistryObject<Item> STEEL_LENS_MOLD = registerMold("steel_lens_mold");
+    public static final RegistryObject<Item> UNFIRED_PLATE_MOLD = registerUnfiredMold("unfired_plate_mold");
+    public static final RegistryObject<Item> UNFIRED_BLOCK_MOLD = registerUnfiredMold("unfired_block_mold");
+    public static final RegistryObject<Item> UNFIRED_BOTTLE_MOLD = registerUnfiredMold("unfired_bottle_mold");
+    public static final RegistryObject<Item> UNFIRED_JAR_MOLD = registerUnfiredMold("unfired_jar_mold");
+    public static final RegistryObject<Item> UNFIRED_LAMP_GLASS_MOLD = registerUnfiredMold("unfired_lamp_glass_mold");
+    public static final RegistryObject<Item> UNFIRED_LENS_MOLD = registerUnfiredMold("unfired_lens_mold");
     public static final RegistryObject<Item> CERAMIC_PLATE_MOLD = registerCeramicMold("ceramic_plate_mold");
     public static final RegistryObject<Item> CERAMIC_BLOCK_MOLD = registerCeramicMold("ceramic_block_mold");
     public static final RegistryObject<Item> CERAMIC_BOTTLE_MOLD = registerCeramicMold("ceramic_bottle_mold");
@@ -37,6 +43,10 @@ public final class ModItems {
     }
 
     private static RegistryObject<Item> registerMold(String name) {
+        return ITEMS.register(name, () -> new Item(new Item.Properties()));
+    }
+
+    private static RegistryObject<Item> registerUnfiredMold(String name) {
         return ITEMS.register(name, () -> new Item(new Item.Properties()));
     }
 

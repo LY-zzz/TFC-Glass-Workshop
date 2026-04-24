@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "tfc_glass_workshop:unfired_plate_mold",
+    "tfc_glass_workshop:unfired_block_mold",
+    "tfc_glass_workshop:unfired_bottle_mold",
+    "tfc_glass_workshop:unfired_jar_mold",
+    "tfc_glass_workshop:unfired_lamp_glass_mold",
+    "tfc_glass_workshop:unfired_lens_mold"
+  ]
+}

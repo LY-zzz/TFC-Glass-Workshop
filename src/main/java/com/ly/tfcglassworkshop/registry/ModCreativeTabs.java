@@ -28,6 +28,12 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.STEEL_JAR_MOLD.get());
                 output.accept(ModItems.STEEL_LAMP_GLASS_MOLD.get());
                 output.accept(ModItems.STEEL_LENS_MOLD.get());
+                output.accept(ModItems.UNFIRED_PLATE_MOLD.get());
+                output.accept(ModItems.UNFIRED_BLOCK_MOLD.get());
+                output.accept(ModItems.UNFIRED_BOTTLE_MOLD.get());
+                output.accept(ModItems.UNFIRED_JAR_MOLD.get());
+                output.accept(ModItems.UNFIRED_LAMP_GLASS_MOLD.get());
+                output.accept(ModItems.UNFIRED_LENS_MOLD.get());
                 output.accept(ModItems.CERAMIC_PLATE_MOLD.get());
                 output.accept(ModItems.CERAMIC_BLOCK_MOLD.get());
                 output.accept(ModItems.CERAMIC_BOTTLE_MOLD.get());

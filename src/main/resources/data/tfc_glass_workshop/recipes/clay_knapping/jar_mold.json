@@ -1,0 +1,13 @@
+{
+  "type": "tfc:knapping",
+  "knapping_type": "tfc:clay",
+  "pattern": [
+    "XXXXX",
+    "XX XX",
+    "X   X",
+    "XXXXX"
+  ],
+  "result": {
+    "item": "tfc_glass_workshop:unfired_jar_mold"
+  }
+}

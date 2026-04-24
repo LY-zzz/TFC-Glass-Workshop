@@ -1,0 +1,15 @@
+{
+  "type": "tfc:knapping",
+  "knapping_type": "tfc:clay",
+  "outside_slot_required": true,
+  "pattern": [
+    "XXXXX",
+    "XX XX",
+    "X   X",
+    "XX XX",
+    "XXXXX"
+  ],
+  "result": {
+    "item": "tfc_glass_workshop:unfired_lens_mold"
+  }
+}

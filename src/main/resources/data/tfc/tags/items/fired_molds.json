@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "tfc_glass_workshop:ceramic_plate_mold",
+    "tfc_glass_workshop:ceramic_block_mold",
+    "tfc_glass_workshop:ceramic_bottle_mold",
+    "tfc_glass_workshop:ceramic_jar_mold",
+    "tfc_glass_workshop:ceramic_lamp_glass_mold",
+    "tfc_glass_workshop:ceramic_lens_mold"
+  ]
+}

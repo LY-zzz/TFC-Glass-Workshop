@@ -1,0 +1,14 @@
+{
+  "type": "tfc:knapping",
+  "knapping_type": "tfc:clay",
+  "outside_slot_required": true,
+  "pattern": [
+    "XXXXX",
+    "X X X",
+    "XX XX",
+    "XXXXX"
+  ],
+  "result": {
+    "item": "tfc_glass_workshop:unfired_bottle_mold"
+  }
+}
