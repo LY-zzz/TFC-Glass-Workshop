@@ -1,0 +1,14 @@
+{
+  "type": "tfc_glass_workshop:pressing",
+  "input": {
+    "item": "tfc:olivine_glass_batch"
+  },
+  "mold": {
+    "tag": "tfc_glass_workshop:plate_molds"
+  },
+  "min_temp": 900.0,
+  "result": {
+    "item": "minecraft:glass_pane",
+    "count": 16
+  }
+}

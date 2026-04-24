@@ -1,0 +1,14 @@
+{
+  "type": "tfc_glass_workshop:pressing",
+  "input": {
+    "item": "tfc:hematitic_glass_batch"
+  },
+  "mold": {
+    "tag": "tfc_glass_workshop:jar_molds"
+  },
+  "min_temp": 900.0,
+  "result": {
+    "item": "tfc:empty_jar",
+    "count": 4
+  }
+}
