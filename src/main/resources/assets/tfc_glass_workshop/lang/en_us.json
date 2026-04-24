@@ -1,6 +1,11 @@
 {
   "block.tfc_glass_workshop.glass_press": "Glass Press",
   "container.tfc_glass_workshop.glass_press": "Glass Press",
+  "screen.tfc_glass_workshop.glass_press.temperature": "Temp: %sC / %sC",
+  "screen.tfc_glass_workshop.glass_press.status.no_recipe": "No matching recipe",
+  "screen.tfc_glass_workshop.glass_press.status.heating": "Heating input",
+  "screen.tfc_glass_workshop.glass_press.status.pressing": "Pressing",
+  "screen.tfc_glass_workshop.glass_press.status.ready": "Ready",
   "item.tfc_glass_workshop.plate_mold": "Plate Mold",
   "item.tfc_glass_workshop.block_mold": "Block Mold",
   "item.tfc_glass_workshop.bottle_mold": "Bottle Mold",

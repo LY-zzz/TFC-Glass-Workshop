@@ -10,6 +10,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -25,15 +27,23 @@ public class GlassPressMenu extends AbstractContainerMenu {
 
     private final GlassPressBlockEntity blockEntity;
     private final ContainerLevelAccess access;
+    private final ContainerData data;
 
     public GlassPressMenu(int containerId, Inventory playerInventory, FriendlyByteBuf data) {
-        this(containerId, playerInventory, getBlockEntity(playerInventory, data.readBlockPos()));
+        this(containerId, playerInventory, getBlockEntity(playerInventory, data.readBlockPos()), new SimpleContainerData(GlassPressBlockEntity.DATA_COUNT));
     }
 
     public GlassPressMenu(int containerId, Inventory playerInventory, GlassPressBlockEntity blockEntity) {
+        this(containerId, playerInventory, blockEntity, blockEntity.getContainerData());
+    }
+
+    private GlassPressMenu(int containerId, Inventory playerInventory, GlassPressBlockEntity blockEntity, ContainerData data) {
         super(ModMenuTypes.GLASS_PRESS.get(), containerId);
         this.blockEntity = blockEntity;
         this.access = ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos());
+        this.data = data;
+
+        addDataSlots(data);
 
         addMachineSlots();
         addPlayerInventory(playerInventory);
@@ -42,6 +52,31 @@ public class GlassPressMenu extends AbstractContainerMenu {
 
     public GlassPressBlockEntity getBlockEntity() {
         return blockEntity;
+    }
+
+    public int getProgress() {
+        return data.get(GlassPressBlockEntity.DATA_PROGRESS);
+    }
+
+    public int getScaledProgress(int pixels) {
+        int progress = getProgress();
+        int pressTime = data.get(GlassPressBlockEntity.DATA_PRESS_TIME);
+        if (progress <= 0 || pressTime <= 0) {
+            return 0;
+        }
+        return progress * pixels / pressTime;
+    }
+
+    public int getCurrentTemperature() {
+        return data.get(GlassPressBlockEntity.DATA_INPUT_TEMPERATURE);
+    }
+
+    public int getRequiredTemperature() {
+        return data.get(GlassPressBlockEntity.DATA_REQUIRED_TEMPERATURE);
+    }
+
+    public boolean hasRecipe() {
+        return getRequiredTemperature() > 0;
     }
 
     @Override
