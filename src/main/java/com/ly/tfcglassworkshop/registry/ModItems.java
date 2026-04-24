@@ -37,7 +37,7 @@ public final class ModItems {
     }
 
     private static RegistryObject<Item> registerMold(String name) {
-        return ITEMS.register(name, () -> new Item(new Item.Properties().stacksTo(1)));
+        return ITEMS.register(name, () -> new Item(new Item.Properties()));
     }
 
     private static RegistryObject<Item> registerCeramicMold(String name) {
