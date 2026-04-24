@@ -2,16 +2,18 @@ package com.ly.tfcglassworkshop.blockentity;
 
 import com.ly.tfcglassworkshop.TFCGlassWorkshop;
 import com.ly.tfcglassworkshop.item.CeramicMoldItem;
-import com.ly.tfcglassworkshop.registry.ModBlockEntities;
 import com.ly.tfcglassworkshop.menu.GlassPressMenu;
 import com.ly.tfcglassworkshop.recipe.PressingRecipe;
+import com.ly.tfcglassworkshop.registry.ModBlockEntities;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -36,6 +38,7 @@ import com.ly.tfcglassworkshop.registry.ModTags;
 
 public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
     private static final float CERAMIC_MOLD_BREAK_CHANCE = 0.1F;
+    private static final ResourceLocation TFC_GLASS_BOTTLES_TAG = ResourceLocation.fromNamespaceAndPath("tfc", "glass_bottles");
     public static final int PRESS_TIME = 20;
     public static final int DATA_PROGRESS = 0;
     public static final int DATA_PRESS_TIME = 1;
@@ -193,7 +196,7 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
         ItemStack inputStack = inventory.getStackInSlot(INPUT_SLOT);
         ItemStack moldStack = inventory.getStackInSlot(MOLD_SLOT);
         ItemStack outputStack = inventory.getStackInSlot(OUTPUT_SLOT);
-        ItemStack recipeResult = recipe.getResult();
+        ItemStack recipeResult = prepareRecipeResult(recipe.getResult());
 
         inputStack.shrink(1);
         damageMold(moldStack);
@@ -206,6 +209,19 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
 
         setChanged();
         TFCGlassWorkshop.LOGGER.debug("Glass press completed recipe {}", recipe.getId());
+    }
+
+    private ItemStack prepareRecipeResult(ItemStack result) {
+        if (!result.is(ItemTags.create(TFC_GLASS_BOTTLES_TAG))) {
+            return result;
+        }
+
+        result.removeTagKey("fluid");
+        result.removeTagKey("tfc:glass_work_data");
+        if (result.getTag() != null && result.getTag().isEmpty()) {
+            result.setTag(null);
+        }
+        return result;
     }
 
     private void damageMold(ItemStack moldStack) {
