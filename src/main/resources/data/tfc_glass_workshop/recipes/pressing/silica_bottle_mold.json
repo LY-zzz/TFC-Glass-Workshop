@@ -8,7 +8,7 @@
   },
   "min_temp": 900.0,
   "result": {
-    "item": "tfc:silica_glass_bottle",
-    "count": 4
+    "item": "minecraft:glass_bottle",
+    "count": 1
   }
 }

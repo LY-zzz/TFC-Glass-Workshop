@@ -1,6 +1,7 @@
 package com.ly.tfcglassworkshop.blockentity;
 
 import com.ly.tfcglassworkshop.TFCGlassWorkshop;
+import com.ly.tfcglassworkshop.item.CeramicMoldItem;
 import com.ly.tfcglassworkshop.registry.ModBlockEntities;
 import com.ly.tfcglassworkshop.menu.GlassPressMenu;
 import com.ly.tfcglassworkshop.recipe.PressingRecipe;
@@ -9,6 +10,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -32,6 +35,7 @@ import com.ly.tfcglassworkshop.registry.ModRecipeTypes;
 import com.ly.tfcglassworkshop.registry.ModTags;
 
 public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
+    private static final float CERAMIC_MOLD_BREAK_CHANCE = 0.1F;
     public static final int PRESS_TIME = 20;
     public static final int DATA_PROGRESS = 0;
     public static final int DATA_PRESS_TIME = 1;
@@ -205,16 +209,13 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     private void damageMold(ItemStack moldStack) {
-        if (!moldStack.isDamageableItem()) {
+        if (!(moldStack.getItem() instanceof CeramicMoldItem)) {
             return;
         }
 
-        int newDamage = moldStack.getDamageValue() + 1;
-        if (newDamage >= moldStack.getMaxDamage()) {
+        if (level != null && level.random.nextFloat() < CERAMIC_MOLD_BREAK_CHANCE) {
             inventory.setStackInSlot(MOLD_SLOT, ItemStack.EMPTY);
-        } else {
-            moldStack.setDamageValue(newDamage);
-            inventory.setStackInSlot(MOLD_SLOT, moldStack);
+            level.playSound(null, worldPosition, SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
         }
     }
 
