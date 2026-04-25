@@ -30,5 +30,7 @@
   "item.tfc_glass_workshop.ceramic_jar_mold": "Ceramic Jar Mold",
   "item.tfc_glass_workshop.ceramic_lamp_glass_mold": "Ceramic Lamp Glass Mold",
   "item.tfc_glass_workshop.ceramic_lens_mold": "Ceramic Lens Mold",
-  "itemGroup.tfc_glass_workshop.main": "TerraFirmaCraft: Glass Workshop"
+  "itemGroup.tfc_glass_workshop.main": "TerraFirmaCraft: Glass Workshop",
+  "jei.tfc_glass_workshop.pressing": "Glass Pressing",
+  "jei.tfc_glass_workshop.min_heat": "Required Heat: %s"
 }
