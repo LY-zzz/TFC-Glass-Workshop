@@ -6,7 +6,7 @@
   "mold": {
     "tag": "tfc_glass_workshop:bottle_molds"
   },
-  "min_temp": 900.0,
+  "min_temp": 480.0,
   "result": {
     "item": "tfc:hematitic_glass_bottle",
     "count": 1
