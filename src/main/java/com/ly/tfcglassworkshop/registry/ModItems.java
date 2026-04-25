@@ -13,7 +13,7 @@ public final class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, TFCGlassWorkshop.MOD_ID);
 
     public static final RegistryObject<Item> GLASS_PRESS = ITEMS.register("glass_press",
-            () -> new BlockItem(ModBlocks.GLASS_PRESS.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.GLASS_PRESS.get(), new Item.Properties().stacksTo(32)));
     public static final RegistryObject<Item> PLATE_MOLD = registerMold("plate_mold");
     public static final RegistryObject<Item> BLOCK_MOLD = registerMold("block_mold");
     public static final RegistryObject<Item> BOTTLE_MOLD = registerMold("bottle_mold");
