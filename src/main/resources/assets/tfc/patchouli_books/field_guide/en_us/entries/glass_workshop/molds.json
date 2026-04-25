@@ -1,0 +1,62 @@
+{
+  "name": "Press Molds",
+  "category": "tfc:glass_workshop",
+  "icon": "tfc_glass_workshop:plate_mold",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The press uses one mold to decide the shape of the glass. Metal molds are permanent. Ceramic molds are cheaper, but each pressing has a chance to break them."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc_glass_workshop:anvil/wrought_iron_plate_mold",
+      "text": "Wrought iron molds are made on an anvil from wrought iron sheets. They are permanent."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc_glass_workshop:anvil/steel_plate_mold",
+      "text": "Steel molds work the same way as wrought iron molds, using steel sheets and a higher anvil tier."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc_glass_workshop:heating/plate_mold",
+      "text": "Fire an unfired mold to make the ceramic version."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Shapes",
+      "text": "Available mold shapes:$(br)$(li)Plate$(li)Block$(li)Bottle$(li)Jar$(li)Lamp Glass$(li)Lens"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc_glass_workshop:clay_knapping/plate_mold",
+      "text": "Clay pattern for an unfired plate mold."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc_glass_workshop:clay_knapping/block_mold",
+      "text": "Clay pattern for an unfired block mold."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc_glass_workshop:clay_knapping/bottle_mold",
+      "text": "Clay pattern for an unfired bottle mold."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc_glass_workshop:clay_knapping/jar_mold",
+      "text": "Clay pattern for an unfired jar mold."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc_glass_workshop:clay_knapping/lamp_glass_mold",
+      "text": "Clay pattern for an unfired lamp glass mold."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc_glass_workshop:clay_knapping/lens_mold",
+      "text": "Clay pattern for an unfired lens mold."
+    }
+  ]
+}

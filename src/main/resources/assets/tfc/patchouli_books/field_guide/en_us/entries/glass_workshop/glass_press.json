@@ -1,0 +1,27 @@
+{
+  "name": "Glass Press",
+  "category": "tfc:glass_workshop",
+  "icon": "tfc_glass_workshop:glass_press",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The $(thing)Glass Press$() turns hot TFC glass batches into finished products with a reusable mold. It does not heat glass by itself; use $(l:tfc:mechanics/heating)Heating$() first."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc_glass_workshop:crafting/glass_press",
+      "text": "The press is unlocked at the wrought iron stage. Steel sheets can also be used in place of wrought iron sheets."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Pressing",
+      "text": "1. Heat a $(l:tfc:mechanics/glassworking)Glass Batch$() until it reaches at least $(4)$(bold)Faint Red$().$(br)2. Put the hot batch in the input slot.$(br)3. Put a mold in the mold slot.$(br)4. Take the result from the output slot."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Output",
+      "text": "Each pressing recipe consumes one hot glass batch and uses the installed mold shape."
+    }
+  ]
+}

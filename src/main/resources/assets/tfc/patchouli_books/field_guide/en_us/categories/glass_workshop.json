@@ -1,0 +1,6 @@
+{
+  "name": "Glass Workshop",
+  "description": "Batch glass production with heated glass batches, molds, and the glass press.",
+  "icon": "tfc_glass_workshop:glass_press",
+  "sortnum": 3
+}
