@@ -1,3 +1,6 @@
 {
-  "parent": "tfc_glass_workshop:item/plate_mold"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "tfc_glass_workshop:item/ceramic_plate_mold"
+  }
 }
