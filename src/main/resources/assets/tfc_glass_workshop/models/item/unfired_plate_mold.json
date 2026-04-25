@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "tfc:item/ceramic/unfired_ingot"
+    "layer0": "tfc_glass_workshop:item/unfired_plate_mold"
   }
 }
