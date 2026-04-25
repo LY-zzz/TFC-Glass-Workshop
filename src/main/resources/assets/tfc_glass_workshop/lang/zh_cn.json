@@ -31,6 +31,5 @@
   "item.tfc_glass_workshop.ceramic_lamp_glass_mold": "\u9676\u74f7\u706f\u7f69\u6a21\u5177",
   "item.tfc_glass_workshop.ceramic_lens_mold": "\u9676\u74f7\u900f\u955c\u6a21\u5177",
   "itemGroup.tfc_glass_workshop.main": "\u7fa4\u5ce6\u4f20\u8bf4\uff1a\u73bb\u7483\u5de5\u574a",
-  "jei.tfc_glass_workshop.pressing": "\u73bb\u7483\u538b\u5236",
-  "jei.tfc_glass_workshop.min_heat": "\u6240\u9700\u70ed\u5ea6\uff1a%s"
+  "jei.tfc_glass_workshop.pressing": "\u73bb\u7483\u538b\u5236"
 }

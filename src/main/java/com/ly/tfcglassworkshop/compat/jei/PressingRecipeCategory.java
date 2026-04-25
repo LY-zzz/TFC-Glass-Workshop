@@ -10,15 +10,13 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.dries007.tfc.common.capabilities.heat.Heat;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
 public final class PressingRecipeCategory implements IRecipeCategory<PressingRecipe> {
     private static final int WIDTH = 128;
-    private static final int HEIGHT = 54;
+    private static final int HEIGHT = 34;
 
     private final IDrawable icon;
     private final IDrawableStatic arrow;
@@ -69,10 +67,5 @@ public final class PressingRecipeCategory implements IRecipeCategory<PressingRec
     @Override
     public void draw(PressingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         arrow.draw(guiGraphics, 69, 8);
-        Heat heat = Heat.getHeat(recipe.getMinTemperature());
-        if (heat != null) {
-            Component temperature = Component.translatable("jei.tfc_glass_workshop.min_heat", heat.getDisplayName().withStyle(heat.getColor()));
-            guiGraphics.drawString(Minecraft.getInstance().font, temperature, 7, 36, 0x404040, false);
-        }
     }
 }
