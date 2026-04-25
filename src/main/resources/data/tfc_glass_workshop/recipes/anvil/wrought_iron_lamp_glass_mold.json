@@ -1,0 +1,15 @@
+{
+  "type": "tfc:anvil",
+  "input": {
+    "tag": "forge:sheets/wrought_iron"
+  },
+  "result": {
+    "item": "tfc_glass_workshop:lamp_glass_mold"
+  },
+  "tier": 3,
+  "rules": [
+    "hit_last",
+    "hit_second_last",
+    "hit_third_last"
+  ]
+}
