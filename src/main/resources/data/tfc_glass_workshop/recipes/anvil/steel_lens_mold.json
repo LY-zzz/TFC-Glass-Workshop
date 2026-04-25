@@ -8,8 +8,8 @@
   },
   "tier": 4,
   "rules": [
-    "hit_last",
+    "punch_last",
     "hit_second_last",
-    "hit_third_last"
+    "shrink_third_last"
   ]
 }
