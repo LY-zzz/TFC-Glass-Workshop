@@ -5,11 +5,13 @@ import com.ly.tfcglassworkshop.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
+import net.dries007.tfc.util.rotation.NetworkAction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -72,6 +74,18 @@ public class GlassPressBlock extends HorizontalDirectionalBlock implements Entit
         }
 
         super.onRemove(state, level, pos, newState, isMoving);
+    }
+
+    @Override
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+        if (direction == Direction.UP && level instanceof Level realLevel && !realLevel.isClientSide) {
+            BlockEntity blockEntity = realLevel.getBlockEntity(pos);
+            if (blockEntity instanceof GlassPressBlockEntity glassPress) {
+                glassPress.performNetworkAction(NetworkAction.UPDATE);
+            }
+        }
+
+        return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     }
 
     @Override

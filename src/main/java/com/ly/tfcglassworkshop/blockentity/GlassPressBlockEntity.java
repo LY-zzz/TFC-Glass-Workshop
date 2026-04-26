@@ -6,8 +6,14 @@ import com.ly.tfcglassworkshop.menu.GlassPressMenu;
 import com.ly.tfcglassworkshop.recipe.PressingRecipe;
 import com.ly.tfcglassworkshop.registry.ModBlockEntities;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.blockentities.rotation.RotationSinkBlockEntity;
+import net.dries007.tfc.util.rotation.NetworkAction;
+import net.dries007.tfc.util.rotation.Node;
+import net.dries007.tfc.util.rotation.Rotation;
+import net.dries007.tfc.util.rotation.SinkNode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -36,10 +42,11 @@ import java.util.Optional;
 import com.ly.tfcglassworkshop.registry.ModRecipeTypes;
 import com.ly.tfcglassworkshop.registry.ModTags;
 
-public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
+public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, RotationSinkBlockEntity {
     private static final float CERAMIC_MOLD_BREAK_CHANCE = 0.1F;
+    private static final float REFERENCE_ROTATION_SPEED = Mth.PI / 40F;
     private static final ResourceLocation TFC_GLASS_BOTTLES_TAG = ResourceLocation.fromNamespaceAndPath("tfc", "glass_bottles");
-    public static final int PRESS_TIME = 20;
+    public static final int PRESS_TIME = 60;
     public static final int DATA_PROGRESS = 0;
     public static final int DATA_PRESS_TIME = 1;
     public static final int DATA_INPUT_TEMPERATURE = 2;
@@ -68,13 +75,14 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
         }
     };
 
+    private final Node rotationNode;
     private LazyOptional<IItemHandler> inventoryCapability = LazyOptional.of(() -> inventory);
-    private int progress;
+    private float progress;
     private final ContainerData containerData = new ContainerData() {
         @Override
         public int get(int index) {
             return switch (index) {
-                case DATA_PROGRESS -> progress;
+                case DATA_PROGRESS -> Mth.floor(progress);
                 case DATA_PRESS_TIME -> PRESS_TIME;
                 case DATA_INPUT_TEMPERATURE -> (int) getInputTemperature();
                 case DATA_REQUIRED_TEMPERATURE -> getRequiredTemperature();
@@ -97,6 +105,7 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
 
     public GlassPressBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.GLASS_PRESS.get(), pos, state);
+        rotationNode = new SinkNode(pos, Direction.UP) {};
     }
 
     public ItemStackHandler getInventory() {
@@ -125,17 +134,31 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     public int getProgress() {
-        return progress;
+        return Mth.floor(progress);
     }
 
     public ContainerData getContainerData() {
         return containerData;
     }
 
+    @Override
+    public Node getRotationNode() {
+        return rotationNode;
+    }
+
+    public float getRotationSpeed() {
+        Rotation rotation = rotationNode.rotation();
+        return rotation == null ? 0F : rotation.positiveSpeed();
+    }
+
+    public boolean hasMechanicalPower() {
+        return getRotationSpeed() > 0F;
+    }
+
     public static void serverTick(Level level, BlockPos pos, BlockState state, GlassPressBlockEntity blockEntity) {
         Optional<PressingRecipe> recipe = blockEntity.getMatchingRecipe();
-        if (recipe.isPresent() && blockEntity.canProcess(recipe.get())) {
-            blockEntity.progress++;
+        if (recipe.isPresent() && blockEntity.canProcess(recipe.get()) && blockEntity.hasMechanicalPower()) {
+            blockEntity.progress += blockEntity.getProgressIncrement();
             if (blockEntity.progress >= PRESS_TIME) {
                 blockEntity.craft(recipe.get());
                 blockEntity.progress = 0;
@@ -192,6 +215,10 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
         return outputStack.getCount() + recipeResult.getCount() <= outputStack.getMaxStackSize();
     }
 
+    private float getProgressIncrement() {
+        return getRotationSpeed() / REFERENCE_ROTATION_SPEED;
+    }
+
     private void craft(PressingRecipe recipe) {
         ItemStack inputStack = inventory.getStackInSlot(INPUT_SLOT);
         ItemStack moldStack = inventory.getStackInSlot(MOLD_SLOT);
@@ -239,6 +266,17 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
     public void onLoad() {
         super.onLoad();
         inventoryCapability = LazyOptional.of(() -> inventory);
+        if (level != null && !level.isClientSide) {
+            performNetworkAction(NetworkAction.ADD);
+        }
+    }
+
+    @Override
+    public void setRemoved() {
+        if (level != null && !level.isClientSide) {
+            performNetworkAction(NetworkAction.REMOVE);
+        }
+        super.setRemoved();
     }
 
     @Override
@@ -266,13 +304,13 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider {
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         tag.put("Inventory", inventory.serializeNBT());
-        tag.putInt("Progress", progress);
+        tag.putFloat("Progress", progress);
     }
 
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
         inventory.deserializeNBT(tag.getCompound("Inventory"));
-        progress = tag.getInt("Progress");
+        progress = tag.getFloat("Progress");
     }
 }

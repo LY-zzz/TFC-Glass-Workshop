@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Glass Press$() turns hot TFC glass batches into finished products with a reusable mold. It does not heat glass by itself; use $(l:tfc:mechanics/heating)Heating$() first."
+      "text": "The $(thing)Glass Press$() turns hot TFC glass batches into finished products with a reusable mold. It does not heat glass by itself; use $(l:tfc:mechanics/heating)Heating$() first. It needs TFC $(l:tfc:mechanics/mechanical_power)mechanical power$() from an axle or gear box above it, and higher rotation speed presses faster."
     },
     {
       "type": "patchouli:crafting",
@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Pressing",
-      "text": "1. Heat a $(l:tfc:mechanics/glassworking)Glass Batch$() until it reaches at least $(4)$(bold)Faint Red$().$(br)2. Put the hot batch in the input slot.$(br)3. Put a mold in the mold slot.$(br)4. Take the result from the output slot."
+      "text": "1. Heat a $(l:tfc:mechanics/glassworking)Glass Batch$() until it reaches at least $(4)$(bold)Faint Red$().$(br)2. Put the hot batch in the input slot.$(br)3. Put a mold in the mold slot.$(br)4. Keep the top mechanical input rotating.$(br)5. Take the result from the output slot."
     },
     {
       "type": "patchouli:text",

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)\u73bb\u7483\u538b\u5236\u673a$()\u53ef\u4ee5\u5c06\u9ad8\u6e29\u7684 TFC \u73bb\u7483\u539f\u6599\u501f\u52a9\u6a21\u5177\u538b\u5236\u6210\u6210\u54c1\u3002\u5b83\u672c\u8eab\u4e0d\u4f1a\u52a0\u70ed\u73bb\u7483\uff0c\u8bf7\u5148\u8fdb\u884c$(l:tfc:mechanics/heating)\u52a0\u70ed$()\u3002"
+      "text": "$(thing)玻璃压制机$()可以将高温的 TFC 玻璃原料借助模具压制成成品。它本身不会加热玻璃，请先进行$(l:tfc:mechanics/heating)加热$()。压制机需要从顶部接入 TFC 传动杆或齿轮箱提供的$(l:tfc:mechanics/mechanical_power)机械动力$()；转速越快，压制越快。"
     },
     {
       "type": "patchouli:crafting",
@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "\u538b\u5236\u6d41\u7a0b",
-      "text": "1\u3001\u5c06$(l:tfc:mechanics/glassworking)\u73bb\u7483\u539f\u6599$()\u52a0\u70ed\u5230\u81f3\u5c11$(4)$(bold)\u6de1\u7ea2$()\u3002$(br)2\u3001\u5c06\u9ad8\u6e29\u539f\u6599\u653e\u5165\u8f93\u5165\u69fd\u3002$(br)3\u3001\u5c06\u6a21\u5177\u653e\u5165\u6a21\u5177\u69fd\u3002$(br)4\u3001\u4ece\u8f93\u51fa\u69fd\u53d6\u51fa\u6210\u54c1\u3002"
+      "text": "1、将$(l:tfc:mechanics/glassworking)玻璃原料$()加热到至少$(4)$(bold)淡红$()。$(br)2、将高温原料放入输入槽。$(br)3、将模具放入模具槽。$(br)4、让顶部传动输入保持转动。$(br)5、从输出槽取出成品。"
     },
     {
       "type": "patchouli:text",
