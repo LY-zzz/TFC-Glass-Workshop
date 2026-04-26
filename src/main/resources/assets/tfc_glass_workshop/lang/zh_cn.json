@@ -1,6 +1,6 @@
 {
-  "block.tfc_glass_workshop.glass_press": "\u73bb\u7483\u538b\u5236\u6210\u578b\u673a",
-  "container.tfc_glass_workshop.glass_press": "\u73bb\u7483\u538b\u5236\u6210\u578b\u673a",
+  "block.tfc_glass_workshop.glass_press": "\u73bb\u7483\u538b\u5236\u673a",
+  "container.tfc_glass_workshop.glass_press": "\u73bb\u7483\u538b\u5236\u673a",
   "screen.tfc_glass_workshop.glass_press.temperature": "\u6e29\u5ea6\uff1a%sC / %sC",
   "screen.tfc_glass_workshop.glass_press.status.no_recipe": "\u65e0\u5339\u914d\u914d\u65b9",
   "screen.tfc_glass_workshop.glass_press.status.heating": "\u6b63\u5728\u52a0\u70ed",
