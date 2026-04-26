@@ -1,8 +1,26 @@
 {
-  "parent": "minecraft:block/orientable",
+  "parent": "minecraft:block/block",
   "textures": {
-    "front": "minecraft:block/iron_block",
-    "side": "minecraft:block/smooth_stone",
-    "top": "minecraft:block/smooth_stone"
-  }
+    "particle": "tfc_glass_workshop:block/glass_press_front",
+    "front": "tfc_glass_workshop:block/glass_press_front",
+    "back": "tfc_glass_workshop:block/glass_press_back",
+    "left": "tfc_glass_workshop:block/glass_press_left",
+    "right": "tfc_glass_workshop:block/glass_press_right",
+    "top": "tfc_glass_workshop:block/glass_press_top",
+    "bottom": "tfc_glass_workshop:block/glass_press_bottom"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "north": { "texture": "#front", "cullface": "north" },
+        "south": { "texture": "#back", "cullface": "south" },
+        "west": { "texture": "#left", "cullface": "west" },
+        "east": { "texture": "#right", "cullface": "east" },
+        "up": { "texture": "#top", "cullface": "up" },
+        "down": { "texture": "#bottom", "cullface": "down" }
+      }
+    }
+  ]
 }
