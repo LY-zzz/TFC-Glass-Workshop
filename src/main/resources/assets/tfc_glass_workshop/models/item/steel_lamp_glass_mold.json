@@ -1,3 +1,6 @@
 {
-  "parent": "tfc_glass_workshop:item/lamp_glass_mold"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "tfc_glass_workshop:item/steel_lamp_glass_mold"
+  }
 }
