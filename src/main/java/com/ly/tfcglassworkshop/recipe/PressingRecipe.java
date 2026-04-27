@@ -1,44 +1,46 @@
 package com.ly.tfcglassworkshop.recipe;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.ly.tfcglassworkshop.blockentity.GlassPressBlockEntity;
 import com.ly.tfcglassworkshop.registry.ModRecipeTypes;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.common.component.glass.GlassOperation;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-public class PressingRecipe implements Recipe<Container> {
+public class PressingRecipe implements Recipe<PressingRecipe.Input> {
     public static final int MAX_POWDER_OPERATIONS = 3;
 
-    private final ResourceLocation id;
+    private static final Codec<ResourceLocation> OPERATION_ID_CODEC = Codec.STRING.xmap(PressingRecipe::operationId, ResourceLocation::toString);
+
     private final Ingredient input;
     private final Ingredient mold;
-    private final List<GlassOperation> powderOperations;
+    private final List<ResourceLocation> powderOperations;
     private final float minTemperature;
     private final ItemStack result;
 
-    public PressingRecipe(ResourceLocation id, Ingredient input, Ingredient mold, List<GlassOperation> powderOperations, float minTemperature, ItemStack result) {
-        this.id = id;
+    public PressingRecipe(Ingredient input, Ingredient mold, List<ResourceLocation> powderOperations, float minTemperature, ItemStack result) {
+        if (powderOperations.size() > MAX_POWDER_OPERATIONS) {
+            throw new IllegalArgumentException("Pressing recipe cannot require more than " + MAX_POWDER_OPERATIONS + " powders");
+        }
         this.input = input;
         this.mold = mold;
         this.powderOperations = List.copyOf(powderOperations);
@@ -51,8 +53,8 @@ public class PressingRecipe implements Recipe<Container> {
     }
 
     private boolean matchesPowders(List<ItemStack> powderStacks) {
-        Map<GlassOperation, Integer> required = countOperations(powderOperations);
-        Map<GlassOperation, Integer> present = new EnumMap<>(GlassOperation.class);
+        Map<ResourceLocation, Integer> required = countOperations(powderOperations);
+        Map<ResourceLocation, Integer> present = new HashMap<>();
 
         for (ItemStack stack : powderStacks) {
             if (stack.isEmpty()) {
@@ -60,26 +62,23 @@ public class PressingRecipe implements Recipe<Container> {
             }
 
             GlassOperation operation = GlassOperation.getByPowder(stack);
-            if (operation == null) {
+            ResourceLocation operationId = operation == null ? null : GlassOperation.REGISTRY.getKey(operation);
+            if (operationId == null) {
                 return false;
             }
-            present.merge(operation, 1, Integer::sum);
+            present.merge(operationId, 1, Integer::sum);
         }
 
         return present.equals(required);
     }
 
     @Override
-    public boolean matches(Container container, Level level) {
-        return matches(
-                container.getItem(GlassPressBlockEntity.INPUT_SLOT),
-                container.getItem(GlassPressBlockEntity.MOLD_SLOT),
-                GlassPressBlockEntity.getPowderStacks(container)
-        );
+    public boolean matches(Input recipeInput, Level level) {
+        return matches(recipeInput.input(), recipeInput.mold(), recipeInput.powders());
     }
 
     @Override
-    public ItemStack assemble(Container container, RegistryAccess registryAccess) {
+    public ItemStack assemble(Input recipeInput, HolderLookup.Provider registries) {
         return result.copy();
     }
 
@@ -89,7 +88,7 @@ public class PressingRecipe implements Recipe<Container> {
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess registryAccess) {
+    public ItemStack getResultItem(HolderLookup.Provider registries) {
         return result.copy();
     }
 
@@ -100,11 +99,6 @@ public class PressingRecipe implements Recipe<Container> {
         ingredients.add(mold);
         ingredients.addAll(getPowderIngredients());
         return ingredients;
-    }
-
-    @Override
-    public ResourceLocation getId() {
-        return id;
     }
 
     @Override
@@ -125,14 +119,14 @@ public class PressingRecipe implements Recipe<Container> {
         return mold;
     }
 
-    public List<GlassOperation> getPowderOperations() {
+    public List<ResourceLocation> getPowderOperations() {
         return powderOperations;
     }
 
     public NonNullList<Ingredient> getPowderIngredients() {
         NonNullList<Ingredient> ingredients = NonNullList.create();
-        for (GlassOperation operation : powderOperations) {
-            ingredients.add(getPowderIngredient(operation));
+        for (ResourceLocation operationId : powderOperations) {
+            ingredients.add(getPowderIngredient(operationId));
         }
         return ingredients;
     }
@@ -145,77 +139,73 @@ public class PressingRecipe implements Recipe<Container> {
         return result.copy();
     }
 
-    private static Map<GlassOperation, Integer> countOperations(List<GlassOperation> operations) {
-        Map<GlassOperation, Integer> counts = new EnumMap<>(GlassOperation.class);
-        for (GlassOperation operation : operations) {
+    private static Map<ResourceLocation, Integer> countOperations(List<ResourceLocation> operations) {
+        Map<ResourceLocation, Integer> counts = new HashMap<>();
+        for (ResourceLocation operation : operations) {
             counts.merge(operation, 1, Integer::sum);
         }
         return counts;
     }
 
-    private static Ingredient getPowderIngredient(GlassOperation operation) {
+    private static Ingredient getPowderIngredient(ResourceLocation operationId) {
         List<ItemStack> stacks = new ArrayList<>();
         for (Map.Entry<Item, GlassOperation> entry : GlassOperation.POWDERS.get().entrySet()) {
-            if (entry.getValue() == operation) {
+            if (operationId.equals(GlassOperation.REGISTRY.getKey(entry.getValue()))) {
                 stacks.add(new ItemStack(entry.getKey()));
             }
         }
         return stacks.isEmpty() ? Ingredient.EMPTY : Ingredient.of(stacks.toArray(ItemStack[]::new));
     }
 
-    private static List<GlassOperation> readPowderOperations(JsonObject json) {
-        if (!json.has("powders")) {
-            return List.of();
+    private static ResourceLocation operationId(String name) {
+        return name.indexOf(':') >= 0 ? ResourceLocation.parse(name) : ResourceLocation.fromNamespaceAndPath("tfc", name);
+    }
+
+    public record Input(ItemStack input, ItemStack mold, List<ItemStack> powders) implements RecipeInput {
+        public Input {
+            powders = List.copyOf(powders);
         }
 
-        JsonArray array = GsonHelper.getAsJsonArray(json, "powders");
-        if (array.size() > MAX_POWDER_OPERATIONS) {
-            throw new IllegalArgumentException("Pressing recipe cannot require more than " + MAX_POWDER_OPERATIONS + " powders");
+        @Override
+        public ItemStack getItem(int index) {
+            if (index == GlassPressBlockEntity.INPUT_SLOT) {
+                return input;
+            }
+            if (index == GlassPressBlockEntity.MOLD_SLOT) {
+                return mold;
+            }
+            int powderIndex = index - GlassPressBlockEntity.FIRST_POWDER_SLOT;
+            if (powderIndex >= 0 && powderIndex < powders.size()) {
+                return powders.get(powderIndex);
+            }
+            return ItemStack.EMPTY;
         }
 
-        List<GlassOperation> operations = new ArrayList<>();
-        for (JsonElement element : array) {
-            String name = GsonHelper.convertToString(element, "powder");
-            operations.add(GlassOperation.valueOf(name.toUpperCase(Locale.ROOT)));
+        @Override
+        public int size() {
+            return GlassPressBlockEntity.SLOT_COUNT;
         }
-        return operations;
     }
 
     public static class Serializer implements RecipeSerializer<PressingRecipe> {
+        private static final MapCodec<PressingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                Ingredient.CODEC_NONEMPTY.fieldOf("input").forGetter(PressingRecipe::getInput),
+                Ingredient.CODEC_NONEMPTY.fieldOf("mold").forGetter(PressingRecipe::getMold),
+                OPERATION_ID_CODEC.listOf().optionalFieldOf("powders", List.of()).forGetter(PressingRecipe::getPowderOperations),
+                Codec.FLOAT.fieldOf("min_temp").forGetter(PressingRecipe::getMinTemperature),
+                ItemStack.CODEC.fieldOf("result").forGetter(recipe -> recipe.result)
+        ).apply(instance, PressingRecipe::new));
+
+        private static final StreamCodec<RegistryFriendlyByteBuf, PressingRecipe> STREAM_CODEC = ByteBufCodecs.fromCodecWithRegistries(CODEC.codec());
+
         @Override
-        public PressingRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-            Ingredient input = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "input"));
-            Ingredient mold = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "mold"));
-            List<GlassOperation> powderOperations = readPowderOperations(json);
-            float minTemperature = GsonHelper.getAsFloat(json, "min_temp");
-            ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
-            return new PressingRecipe(recipeId, input, mold, powderOperations, minTemperature, result);
+        public MapCodec<PressingRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public PressingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-            Ingredient input = Ingredient.fromNetwork(buffer);
-            Ingredient mold = Ingredient.fromNetwork(buffer);
-            int powderCount = buffer.readVarInt();
-            List<GlassOperation> powderOperations = new ArrayList<>(powderCount);
-            for (int i = 0; i < powderCount; i++) {
-                powderOperations.add(buffer.readEnum(GlassOperation.class));
-            }
-            float minTemperature = buffer.readFloat();
-            ItemStack result = buffer.readItem();
-            return new PressingRecipe(recipeId, input, mold, powderOperations, minTemperature, result);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, PressingRecipe recipe) {
-            recipe.input.toNetwork(buffer);
-            recipe.mold.toNetwork(buffer);
-            buffer.writeVarInt(recipe.powderOperations.size());
-            for (GlassOperation operation : recipe.powderOperations) {
-                buffer.writeEnum(operation);
-            }
-            buffer.writeFloat(recipe.minTemperature);
-            buffer.writeItem(recipe.result);
+        public StreamCodec<RegistryFriendlyByteBuf, PressingRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
     }
 }

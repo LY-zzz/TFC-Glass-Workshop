@@ -1,0 +1,13 @@
+{
+    "type":  "tfc_glass_workshop:pressing",
+    "input":  {
+                  "item":  "tfc:hematitic_glass_batch"
+              },
+    "mold":  {
+                 "tag":  "tfc_glass_workshop:block_molds"
+             },
+    "min_temp":  480.0,
+    "result":  {
+                   "id":  "minecraft:orange_stained_glass"
+               }
+}

@@ -1,0 +1,14 @@
+{
+    "type":  "tfc:knapping",
+    "knapping_type":  "tfc:clay",
+    "pattern":  [
+                    "X   X",
+                    "XXXXX",
+                    "X   X",
+                    "XXXXX",
+                    "X   X"
+                ],
+    "result":  {
+                   "id":  "tfc_glass_workshop:unfired_lamp_glass_mold"
+               }
+}

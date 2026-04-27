@@ -1,0 +1,17 @@
+{
+    "type":  "tfc_glass_workshop:pressing",
+    "input":  {
+                  "tag":  "tfc:glass_batches"
+              },
+    "mold":  {
+                 "tag":  "tfc_glass_workshop:plate_molds"
+             },
+    "powders":  [
+                    "nickel"
+                ],
+    "min_temp":  480,
+    "result":  {
+                   "count":  16,
+                   "id":  "minecraft:brown_stained_glass_pane"
+               }
+}

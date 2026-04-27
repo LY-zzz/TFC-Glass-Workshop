@@ -14,6 +14,8 @@ import net.dries007.tfc.util.rotation.Rotation;
 import net.dries007.tfc.util.rotation.SinkNode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.Mth;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -24,9 +26,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Containers;
-import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -130,13 +130,13 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
             return Optional.empty();
         }
 
-        SimpleContainer container = new SimpleContainer(SLOT_COUNT);
-        container.setItem(INPUT_SLOT, inventory.getStackInSlot(INPUT_SLOT));
-        container.setItem(MOLD_SLOT, inventory.getStackInSlot(MOLD_SLOT));
-        for (int slot = FIRST_POWDER_SLOT; slot < OUTPUT_SLOT; slot++) {
-            container.setItem(slot, inventory.getStackInSlot(slot));
-        }
-        return level.getRecipeManager().getRecipeFor(ModRecipeTypes.PRESSING_TYPE.get(), container, level);
+        PressingRecipe.Input input = new PressingRecipe.Input(
+                inventory.getStackInSlot(INPUT_SLOT),
+                inventory.getStackInSlot(MOLD_SLOT),
+                getPowderStacks()
+        );
+        return level.getRecipeManager().getRecipeFor(ModRecipeTypes.PRESSING_TYPE.get(), input, level)
+                .map(holder -> holder.value());
     }
 
     public static boolean isPowderSlot(int slot) {
@@ -145,14 +145,6 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
 
     public static boolean isGlassworkingPowder(ItemStack stack) {
         return !stack.isEmpty() && GlassOperation.getByPowder(stack) != null;
-    }
-
-    public static List<ItemStack> getPowderStacks(Container container) {
-        List<ItemStack> stacks = new ArrayList<>(POWDER_SLOT_COUNT);
-        for (int slot = FIRST_POWDER_SLOT; slot < OUTPUT_SLOT; slot++) {
-            stacks.add(slot < container.getContainerSize() ? container.getItem(slot) : ItemStack.EMPTY);
-        }
-        return stacks;
     }
 
     public float getInputTemperature() {
@@ -240,7 +232,7 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
         if (outputStack.isEmpty()) {
             return true;
         }
-        if (!ItemStack.isSameItemSameTags(outputStack, recipeResult)) {
+        if (!ItemStack.isSameItemSameComponents(outputStack, recipeResult)) {
             return false;
         }
 
@@ -268,7 +260,7 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
         }
 
         setChanged();
-        TFCGlassWorkshop.LOGGER.debug("Glass press completed recipe {}", recipe.getId());
+        TFCGlassWorkshop.LOGGER.debug("Glass press completed recipe");
     }
 
     private ItemStack prepareRecipeResult(ItemStack result) {
@@ -276,11 +268,7 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
             return result;
         }
 
-        result.removeTagKey("fluid");
-        result.removeTagKey("tfc:glass_work_data");
-        if (result.getTag() != null && result.getTag().isEmpty()) {
-            result.setTag(null);
-        }
+        result.remove(DataComponents.CUSTOM_DATA);
         return result;
     }
 
@@ -330,22 +318,22 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.put("Inventory", inventory.serializeNBT());
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        tag.put("Inventory", inventory.serializeNBT(registries));
         tag.putFloat("Progress", progress);
     }
 
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        loadInventory(tag.getCompound("Inventory"));
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        loadInventory(registries, tag.getCompound("Inventory"));
         progress = tag.getFloat("Progress");
     }
 
-    private void loadInventory(CompoundTag tag) {
+    private void loadInventory(HolderLookup.Provider registries, CompoundTag tag) {
         if (tag.getInt("Size") == SLOT_COUNT) {
-            inventory.deserializeNBT(tag);
+            inventory.deserializeNBT(registries, tag);
             return;
         }
 
@@ -358,7 +346,7 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
             int savedSlot = itemTag.getInt("Slot");
             int targetSlot = savedSlot == 2 ? OUTPUT_SLOT : savedSlot;
             if (targetSlot >= 0 && targetSlot < SLOT_COUNT) {
-                inventory.setStackInSlot(targetSlot, ItemStack.of(itemTag));
+                inventory.setStackInSlot(targetSlot, ItemStack.parseOptional(registries, itemTag));
             }
         }
     }

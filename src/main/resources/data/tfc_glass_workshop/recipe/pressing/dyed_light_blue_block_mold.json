@@ -1,0 +1,16 @@
+{
+    "type":  "tfc_glass_workshop:pressing",
+    "input":  {
+                  "item":  "tfc:silica_glass_batch"
+              },
+    "mold":  {
+                 "tag":  "tfc_glass_workshop:block_molds"
+             },
+    "powders":  [
+                    "lapis_lazuli"
+                ],
+    "min_temp":  480,
+    "result":  {
+                   "id":  "minecraft:light_blue_stained_glass"
+               }
+}

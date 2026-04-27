@@ -1,0 +1,13 @@
+{
+    "type":  "tfc_glass_workshop:pressing",
+    "input":  {
+                  "item":  "tfc:volcanic_glass_batch"
+              },
+    "mold":  {
+                 "tag":  "tfc_glass_workshop:lens_molds"
+             },
+    "min_temp":  480.0,
+    "result":  {
+                   "id":  "tfc:lens"
+               }
+}

@@ -41,7 +41,10 @@ public final class GlassWorkshopJeiPlugin implements IModPlugin {
             return;
         }
 
-        List<PressingRecipe> recipes = minecraft.level.getRecipeManager().getAllRecipesFor(ModRecipeTypes.PRESSING_TYPE.get());
+        List<PressingRecipe> recipes = minecraft.level.getRecipeManager().getAllRecipesFor(ModRecipeTypes.PRESSING_TYPE.get())
+                .stream()
+                .map(holder -> holder.value())
+                .toList();
         registration.addRecipes(PRESSING, recipes);
     }
 

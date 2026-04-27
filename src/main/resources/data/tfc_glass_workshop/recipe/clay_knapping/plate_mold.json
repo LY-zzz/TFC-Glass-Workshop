@@ -1,0 +1,14 @@
+{
+    "type":  "tfc:knapping",
+    "knapping_type":  "tfc:clay",
+    "pattern":  [
+                    "X X X",
+                    "X X X",
+                    "X X X",
+                    "X X X",
+                    "XXXXX"
+                ],
+    "result":  {
+                   "id":  "tfc_glass_workshop:unfired_plate_mold"
+               }
+}

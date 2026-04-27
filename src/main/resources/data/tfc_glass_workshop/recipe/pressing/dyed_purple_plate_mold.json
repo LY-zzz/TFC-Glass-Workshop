@@ -1,0 +1,18 @@
+{
+    "type":  "tfc_glass_workshop:pressing",
+    "input":  {
+                  "tag":  "tfc:glass_batches"
+              },
+    "mold":  {
+                 "tag":  "tfc_glass_workshop:plate_molds"
+             },
+    "powders":  [
+                    "iron",
+                    "copper"
+                ],
+    "min_temp":  480,
+    "result":  {
+                   "count":  16,
+                   "id":  "minecraft:purple_stained_glass_pane"
+               }
+}
