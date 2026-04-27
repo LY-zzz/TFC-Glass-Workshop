@@ -41,3 +41,6 @@ forge*changelog.txt
 
 # Ignore automatically generated source code
 /src/generated/
+
+# Local texture handoff exports
+/texture_exports/

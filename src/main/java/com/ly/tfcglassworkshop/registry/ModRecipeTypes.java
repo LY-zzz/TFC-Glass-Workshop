@@ -15,7 +15,7 @@ public final class ModRecipeTypes {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, TFCGlassWorkshop.MOD_ID);
 
     public static final RegistryObject<RecipeType<PressingRecipe>> PRESSING_TYPE = RECIPE_TYPES.register("pressing",
-            () -> new RecipeType<>() {
+            () -> new RecipeType<PressingRecipe>() {
                 @Override
                 public String toString() {
                     return TFCGlassWorkshop.MOD_ID + ":pressing";
