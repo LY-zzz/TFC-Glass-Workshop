@@ -79,6 +79,11 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
         }
 
         @Override
+        public int getSlotLimit(int slot) {
+            return slot == MOLD_SLOT ? 1 : super.getSlotLimit(slot);
+        }
+
+        @Override
         protected void onContentsChanged(int slot) {
             setChanged();
         }
