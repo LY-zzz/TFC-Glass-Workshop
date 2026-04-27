@@ -40,6 +40,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.RangedWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +89,7 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
 
     private final Node rotationNode;
     private LazyOptional<IItemHandler> inventoryCapability = LazyOptional.of(() -> inventory);
+    private LazyOptional<IItemHandler> outputCapability = LazyOptional.of(() -> new RangedWrapper(inventory, OUTPUT_SLOT, OUTPUT_SLOT + 1));
     private float progress;
     private final ContainerData containerData = new ContainerData() {
         @Override
@@ -315,6 +317,7 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
     public void onLoad() {
         super.onLoad();
         inventoryCapability = LazyOptional.of(() -> inventory);
+        outputCapability = LazyOptional.of(() -> new RangedWrapper(inventory, OUTPUT_SLOT, OUTPUT_SLOT + 1));
         if (level != null && !level.isClientSide) {
             performNetworkAction(NetworkAction.ADD);
         }
@@ -332,17 +335,22 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
     public void invalidateCaps() {
         super.invalidateCaps();
         inventoryCapability.invalidate();
+        outputCapability.invalidate();
     }
 
     @Override
     public void reviveCaps() {
         super.reviveCaps();
         inventoryCapability = LazyOptional.of(() -> inventory);
+        outputCapability = LazyOptional.of(() -> new RangedWrapper(inventory, OUTPUT_SLOT, OUTPUT_SLOT + 1));
     }
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
         if (capability == ForgeCapabilities.ITEM_HANDLER) {
+            if (side == Direction.DOWN) {
+                return outputCapability.cast();
+            }
             return inventoryCapability.cast();
         }
 
