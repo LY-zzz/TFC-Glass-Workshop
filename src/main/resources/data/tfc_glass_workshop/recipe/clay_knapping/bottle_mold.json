@@ -2,13 +2,15 @@
     "type":  "tfc:knapping",
     "knapping_type":  "tfc:clay",
     "outside_slot_required":  true,
+    "default_on":  true,
     "pattern":  [
-                    "XXXXX",
-                    "X X X",
-                    "XX XX",
-                    "XXXXX"
+                    "#####",
+                    "# # #",
+                    "## ##",
+                    "#####"
                 ],
     "result":  {
+                   "count":  1,
                    "id":  "tfc_glass_workshop:unfired_bottle_mold"
                }
 }

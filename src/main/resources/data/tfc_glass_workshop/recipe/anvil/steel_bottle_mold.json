@@ -1,8 +1,8 @@
 {
     "type":  "tfc:anvil",
-    "input":  {
-                  "tag":  "forge:sheets/steel"
-              },
+    "ingredient":  {
+                       "tag":  "c:sheets/steel"
+                   },
     "result":  {
                    "id":  "tfc_glass_workshop:steel_bottle_mold"
                },

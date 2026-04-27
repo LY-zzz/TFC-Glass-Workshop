@@ -1,13 +1,15 @@
 {
     "type":  "tfc:knapping",
     "knapping_type":  "tfc:clay",
+    "default_on":  true,
     "pattern":  [
-                    "XXXX",
-                    "X  X",
-                    "X  X",
-                    "XXXX"
+                    "####",
+                    "#  #",
+                    "#  #",
+                    "####"
                 ],
     "result":  {
+                   "count":  1,
                    "id":  "tfc_glass_workshop:unfired_block_mold"
                }
 }

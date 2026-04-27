@@ -1,8 +1,8 @@
 {
     "type":  "tfc:anvil",
-    "input":  {
-                  "tag":  "forge:sheets/wrought_iron"
-              },
+    "ingredient":  {
+                       "tag":  "c:sheets/wrought_iron"
+                   },
     "result":  {
                    "id":  "tfc_glass_workshop:block_mold"
                },
