@@ -66,7 +66,7 @@ Built for:
 
 - Minecraft `1.20.1`
 - Forge `47.x`
-- TerraFirmaCraft `1.20.1-3.2.21+`
+- TerraFirmaCraft `1.20.1-3.1.18+`
 - Java `17`
 
 Optional integration:

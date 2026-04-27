@@ -40,7 +40,7 @@ For colored glass, the press includes three powder slots and supports the same p
 
 - Minecraft `1.20.1`
 - Forge `47.x`
-- TerraFirmaCraft `1.20.1-3.2.21+`
+- TerraFirmaCraft `1.20.1-3.1.18+`
 - Java `17`
 
 Recommended:
