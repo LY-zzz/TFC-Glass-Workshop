@@ -14,6 +14,11 @@ public class GlassPressScreen extends AbstractContainerScreen<GlassPressMenu> {
     private static final int PROGRESS_BAR_HEIGHT = 8;
     private static final int PROGRESS_BAR_TEXTURE_X = 176;
     private static final int PROGRESS_BAR_TEXTURE_Y = 0;
+    private static final int SLOT_TEXTURE_X = 43;
+    private static final int SLOT_TEXTURE_Y = 34;
+    private static final int SLOT_SIZE = 18;
+    private static final int[] POWDER_SLOT_X = {62, 80, 98};
+    private static final int POWDER_SLOT_Y = 17;
 
     public GlassPressScreen(GlassPressMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -35,7 +40,14 @@ public class GlassPressScreen extends AbstractContainerScreen<GlassPressMenu> {
         int top = topPos;
 
         guiGraphics.blit(TEXTURE, left, top, 0, 0, imageWidth, imageHeight);
+        renderPowderSlots(guiGraphics, left, top);
         renderProgressBar(guiGraphics, left + 100, top + 39);
+    }
+
+    private void renderPowderSlots(GuiGraphics guiGraphics, int left, int top) {
+        for (int slotX : POWDER_SLOT_X) {
+            guiGraphics.blit(TEXTURE, left + slotX - 1, top + POWDER_SLOT_Y - 1, SLOT_TEXTURE_X, SLOT_TEXTURE_Y, SLOT_SIZE, SLOT_SIZE);
+        }
     }
 
     private void renderProgressBar(GuiGraphics guiGraphics, int x, int y) {

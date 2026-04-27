@@ -1,0 +1,18 @@
+﻿{
+    "type":  "tfc_glass_workshop:pressing",
+    "input":  {
+                  "item":  "tfc:silica_glass_batch"
+              },
+    "mold":  {
+                 "tag":  "tfc_glass_workshop:plate_molds"
+             },
+    "powders":  [
+                    "pyrite"
+                ],
+    "min_temp":  480,
+    "result":  {
+                   "item":  "minecraft:orange_stained_glass_pane",
+                   "count":  16
+               }
+}
+

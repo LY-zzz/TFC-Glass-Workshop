@@ -16,12 +16,12 @@
     {
       "type": "patchouli:text",
       "title": "\u538b\u5236\u6d41\u7a0b",
-      "text": "1、将$(l:tfc:mechanics/glassworking)玻璃原料$()加热到至少$(4)$(bold)淡红$()。$(br)2、将高温原料放入输入槽。$(br)3、将模具放入模具槽。$(br)4、让顶部传动输入保持转动。$(br)5、从输出槽取出成品。"
+      "text": "1、将$(l:tfc:mechanics/glassworking)玻璃原料$()加热到至少$(4)$(bold)淡红$()。$(br)2、将高温原料放入输入槽。$(br)3、将模具放入模具槽。$(br)4、需要染色玻璃时，将对应粉末放入上方的 3 个粉末槽。$(br)5、让顶部传动输入保持转动，并从输出槽取出成品。"
     },
     {
       "type": "patchouli:text",
       "title": "\u8f93\u51fa",
-      "text": "\u6bcf\u6761\u538b\u5236\u914d\u65b9\u90fd\u4f1a\u6d88\u8017 1 \u4e2a\u5df2\u52a0\u70ed\u7684\u73bb\u7483\u539f\u6599\uff0c\u5e76\u6839\u636e\u5b89\u88c5\u7684\u6a21\u5177\u5f62\u72b6\u8f93\u51fa\u6210\u54c1\u3002"
+      "text": "\u6bcf\u6761\u538b\u5236\u914d\u65b9\u90fd\u4f1a\u6d88\u8017 1 \u4e2a\u5df2\u52a0\u70ed\u7684\u73bb\u7483\u539f\u6599\uff0c\u5e76\u6839\u636e\u5b89\u88c5\u7684\u6a21\u5177\u5f62\u72b6\u8f93\u51fa\u6210\u54c1\u3002\u65b9\u5757\u6a21\u5177\u548c\u5e73\u677f\u6a21\u5177\u652f\u6301 TFC \u539f\u7248\u73bb\u7483\u5de5\u827a\u7684\u7c89\u672b\u67d3\u8272\u7ec4\u5408\uff1b\u7c89\u672b\u4f1a\u5728\u5b8c\u6210\u538b\u5236\u65f6\u6d88\u8017\u3002"
     }
   ]
 }

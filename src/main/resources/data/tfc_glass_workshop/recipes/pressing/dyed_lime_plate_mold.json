@@ -1,0 +1,19 @@
+﻿{
+    "type":  "tfc_glass_workshop:pressing",
+    "input":  {
+                  "tag":  "tfc:glass_batches_tier_2"
+              },
+    "mold":  {
+                 "tag":  "tfc_glass_workshop:plate_molds"
+             },
+    "powders":  [
+                    "iron",
+                    "soda_ash"
+                ],
+    "min_temp":  480,
+    "result":  {
+                   "item":  "minecraft:lime_stained_glass_pane",
+                   "count":  16
+               }
+}
+

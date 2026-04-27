@@ -1,0 +1,19 @@
+﻿{
+    "type":  "tfc_glass_workshop:pressing",
+    "input":  {
+                  "tag":  "tfc:glass_batches_tier_3"
+              },
+    "mold":  {
+                 "tag":  "tfc_glass_workshop:plate_molds"
+             },
+    "powders":  [
+                    "copper",
+                    "sapphire"
+                ],
+    "min_temp":  480,
+    "result":  {
+                   "item":  "minecraft:cyan_stained_glass_pane",
+                   "count":  16
+               }
+}
+

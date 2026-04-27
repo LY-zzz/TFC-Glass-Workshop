@@ -16,12 +16,12 @@
     {
       "type": "patchouli:text",
       "title": "Pressing",
-      "text": "1. Heat a $(l:tfc:mechanics/glassworking)Glass Batch$() until it reaches at least $(4)$(bold)Faint Red$().$(br)2. Put the hot batch in the input slot.$(br)3. Put a mold in the mold slot.$(br)4. Keep the top mechanical input rotating.$(br)5. Take the result from the output slot."
+      "text": "1. Heat a $(l:tfc:mechanics/glassworking)Glass Batch$() until it reaches at least $(4)$(bold)Faint Red$().$(br)2. Put the hot batch in the input slot.$(br)3. Put a mold in the mold slot.$(br)4. For colored glass, put the required powders in the three upper powder slots.$(br)5. Keep the top mechanical input rotating and take the result from the output slot."
     },
     {
       "type": "patchouli:text",
       "title": "Output",
-      "text": "Each pressing recipe consumes one hot glass batch and uses the installed mold shape."
+      "text": "Each pressing recipe consumes one hot glass batch and uses the installed mold shape. Block molds and plate molds support the same powder color combinations as TFC glassworking. Powders are consumed when pressing completes."
     }
   ]
 }

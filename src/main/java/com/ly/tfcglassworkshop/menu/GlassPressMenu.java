@@ -102,6 +102,10 @@ public class GlassPressMenu extends AbstractContainerMenu {
             if (!moveItemStackTo(stack, GlassPressBlockEntity.MOLD_SLOT, GlassPressBlockEntity.MOLD_SLOT + 1, false)) {
                 return ItemStack.EMPTY;
             }
+        } else if (GlassPressBlockEntity.isGlassworkingPowder(stack)) {
+            if (!moveItemStackTo(stack, GlassPressBlockEntity.FIRST_POWDER_SLOT, GlassPressBlockEntity.OUTPUT_SLOT, false)) {
+                return ItemStack.EMPTY;
+            }
         } else if (!moveItemStackTo(stack, GlassPressBlockEntity.INPUT_SLOT, GlassPressBlockEntity.INPUT_SLOT + 1, false)) {
             return ItemStack.EMPTY;
         }
@@ -123,6 +127,9 @@ public class GlassPressMenu extends AbstractContainerMenu {
     private void addMachineSlots() {
         addSlot(new InputSlot(blockEntity, 44, 35));
         addSlot(new MoldSlot(blockEntity, 80, 35));
+        addSlot(new PowderSlot(blockEntity, GlassPressBlockEntity.FIRST_POWDER_SLOT, 62, 17));
+        addSlot(new PowderSlot(blockEntity, GlassPressBlockEntity.FIRST_POWDER_SLOT + 1, 80, 17));
+        addSlot(new PowderSlot(blockEntity, GlassPressBlockEntity.FIRST_POWDER_SLOT + 2, 98, 17));
         addSlot(new OutputSlot(blockEntity, 116, 35));
     }
 
@@ -167,7 +174,7 @@ public class GlassPressMenu extends AbstractContainerMenu {
 
         @Override
         public boolean mayPlace(ItemStack stack) {
-            return !stack.is(ModTags.Items.PRESS_MOLDS);
+            return !stack.is(ModTags.Items.PRESS_MOLDS) && !GlassPressBlockEntity.isGlassworkingPowder(stack);
         }
     }
 
@@ -184,6 +191,17 @@ public class GlassPressMenu extends AbstractContainerMenu {
         @Override
         public int getMaxStackSize() {
             return 1;
+        }
+    }
+
+    private static class PowderSlot extends SlotItemHandler {
+        PowderSlot(GlassPressBlockEntity blockEntity, int slot, int x, int y) {
+            super(blockEntity.getInventory(), slot, x, y);
+        }
+
+        @Override
+        public boolean mayPlace(ItemStack stack) {
+            return GlassPressBlockEntity.isGlassworkingPowder(stack);
         }
     }
 }

@@ -5,6 +5,7 @@ import com.ly.tfcglassworkshop.item.CeramicMoldItem;
 import com.ly.tfcglassworkshop.menu.GlassPressMenu;
 import com.ly.tfcglassworkshop.recipe.PressingRecipe;
 import com.ly.tfcglassworkshop.registry.ModBlockEntities;
+import net.dries007.tfc.common.capabilities.glass.GlassOperation;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.blockentities.rotation.RotationSinkBlockEntity;
 import net.dries007.tfc.util.rotation.NetworkAction;
@@ -15,12 +16,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Containers;
+import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -37,6 +41,8 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.ly.tfcglassworkshop.registry.ModRecipeTypes;
@@ -54,8 +60,10 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
     public static final int DATA_COUNT = 4;
     public static final int INPUT_SLOT = 0;
     public static final int MOLD_SLOT = 1;
-    public static final int OUTPUT_SLOT = 2;
-    public static final int SLOT_COUNT = 3;
+    public static final int FIRST_POWDER_SLOT = 2;
+    public static final int POWDER_SLOT_COUNT = 3;
+    public static final int OUTPUT_SLOT = FIRST_POWDER_SLOT + POWDER_SLOT_COUNT;
+    public static final int SLOT_COUNT = OUTPUT_SLOT + 1;
 
     private final ItemStackHandler inventory = new ItemStackHandler(SLOT_COUNT) {
         @Override
@@ -66,7 +74,10 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
             if (slot == MOLD_SLOT) {
                 return stack.is(ModTags.Items.PRESS_MOLDS);
             }
-            return !stack.is(ModTags.Items.PRESS_MOLDS);
+            if (isPowderSlot(slot)) {
+                return isGlassworkingPowder(stack);
+            }
+            return !stack.is(ModTags.Items.PRESS_MOLDS) && !isGlassworkingPowder(stack);
         }
 
         @Override
@@ -117,10 +128,29 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
             return Optional.empty();
         }
 
-        SimpleContainer container = new SimpleContainer(2);
+        SimpleContainer container = new SimpleContainer(SLOT_COUNT);
         container.setItem(INPUT_SLOT, inventory.getStackInSlot(INPUT_SLOT));
         container.setItem(MOLD_SLOT, inventory.getStackInSlot(MOLD_SLOT));
+        for (int slot = FIRST_POWDER_SLOT; slot < OUTPUT_SLOT; slot++) {
+            container.setItem(slot, inventory.getStackInSlot(slot));
+        }
         return level.getRecipeManager().getRecipeFor(ModRecipeTypes.PRESSING_TYPE.get(), container, level);
+    }
+
+    public static boolean isPowderSlot(int slot) {
+        return slot >= FIRST_POWDER_SLOT && slot < OUTPUT_SLOT;
+    }
+
+    public static boolean isGlassworkingPowder(ItemStack stack) {
+        return !stack.isEmpty() && GlassOperation.getByPowder(stack) != null;
+    }
+
+    public static List<ItemStack> getPowderStacks(Container container) {
+        List<ItemStack> stacks = new ArrayList<>(POWDER_SLOT_COUNT);
+        for (int slot = FIRST_POWDER_SLOT; slot < OUTPUT_SLOT; slot++) {
+            stacks.add(slot < container.getContainerSize() ? container.getItem(slot) : ItemStack.EMPTY);
+        }
+        return stacks;
     }
 
     public float getInputTemperature() {
@@ -199,7 +229,7 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
         if (inputStack.isEmpty() || moldStack.isEmpty()) {
             return false;
         }
-        if (!recipe.matches(inputStack, moldStack)) {
+        if (!recipe.matches(inputStack, moldStack, getPowderStacks())) {
             return false;
         }
         if (!HeatCapability.has(inputStack) || HeatCapability.getTemperature(inputStack) < recipe.getMinTemperature()) {
@@ -226,6 +256,7 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
         ItemStack recipeResult = prepareRecipeResult(recipe.getResult());
 
         inputStack.shrink(1);
+        consumePowders();
         damageMold(moldStack);
         if (outputStack.isEmpty()) {
             inventory.setStackInSlot(OUTPUT_SLOT, recipeResult);
@@ -249,6 +280,24 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
             result.setTag(null);
         }
         return result;
+    }
+
+    private List<ItemStack> getPowderStacks() {
+        List<ItemStack> stacks = new ArrayList<>(POWDER_SLOT_COUNT);
+        for (int slot = FIRST_POWDER_SLOT; slot < OUTPUT_SLOT; slot++) {
+            stacks.add(inventory.getStackInSlot(slot));
+        }
+        return stacks;
+    }
+
+    private void consumePowders() {
+        for (int slot = FIRST_POWDER_SLOT; slot < OUTPUT_SLOT; slot++) {
+            ItemStack stack = inventory.getStackInSlot(slot);
+            if (!stack.isEmpty()) {
+                stack.shrink(1);
+                inventory.setStackInSlot(slot, stack);
+            }
+        }
     }
 
     private void damageMold(ItemStack moldStack) {
@@ -310,7 +359,27 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        inventory.deserializeNBT(tag.getCompound("Inventory"));
+        loadInventory(tag.getCompound("Inventory"));
         progress = tag.getFloat("Progress");
+    }
+
+    private void loadInventory(CompoundTag tag) {
+        if (tag.getInt("Size") == SLOT_COUNT) {
+            inventory.deserializeNBT(tag);
+            return;
+        }
+
+        ListTag items = tag.getList("Items", Tag.TAG_COMPOUND);
+        for (int slot = 0; slot < SLOT_COUNT; slot++) {
+            inventory.setStackInSlot(slot, ItemStack.EMPTY);
+        }
+        for (int i = 0; i < items.size(); i++) {
+            CompoundTag itemTag = items.getCompound(i);
+            int savedSlot = itemTag.getInt("Slot");
+            int targetSlot = savedSlot == 2 ? OUTPUT_SLOT : savedSlot;
+            if (targetSlot >= 0 && targetSlot < SLOT_COUNT) {
+                inventory.setStackInSlot(targetSlot, ItemStack.of(itemTag));
+            }
+        }
     }
 }

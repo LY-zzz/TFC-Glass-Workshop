@@ -11,12 +11,14 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public final class PressingRecipeCategory implements IRecipeCategory<PressingRecipe> {
-    private static final int WIDTH = 128;
-    private static final int HEIGHT = 34;
+    private static final int WIDTH = 166;
+    private static final int HEIGHT = 52;
 
     private final IDrawable icon;
     private final IDrawableStatic arrow;
@@ -53,19 +55,25 @@ public final class PressingRecipeCategory implements IRecipeCategory<PressingRec
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, PressingRecipe recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 7, 8)
+        builder.addSlot(RecipeIngredientRole.INPUT, 7, 17)
                 .setStandardSlotBackground()
                 .addIngredients(recipe.getInput());
-        builder.addSlot(RecipeIngredientRole.INPUT, 35, 8)
+        builder.addSlot(RecipeIngredientRole.INPUT, 35, 17)
                 .setStandardSlotBackground()
                 .addIngredients(recipe.getMold());
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 103, 8)
+        NonNullList<Ingredient> powders = recipe.getPowderIngredients();
+        for (int i = 0; i < powders.size(); i++) {
+            builder.addSlot(RecipeIngredientRole.INPUT, 63 + i * 18, 17)
+                    .setStandardSlotBackground()
+                    .addIngredients(powders.get(i));
+        }
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 143, 17)
                 .setOutputSlotBackground()
                 .addItemStack(recipe.getResult());
     }
 
     @Override
     public void draw(PressingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        arrow.draw(guiGraphics, 69, 8);
+        arrow.draw(guiGraphics, 116, 17);
     }
 }
