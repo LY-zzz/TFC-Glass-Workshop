@@ -5,8 +5,8 @@ import com.ly.tfcglassworkshop.item.CeramicMoldItem;
 import com.ly.tfcglassworkshop.menu.GlassPressMenu;
 import com.ly.tfcglassworkshop.recipe.PressingRecipe;
 import com.ly.tfcglassworkshop.registry.ModBlockEntities;
-import net.dries007.tfc.common.capabilities.glass.GlassOperation;
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.component.glass.GlassOperation;
+import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.blockentities.rotation.RotationSinkBlockEntity;
 import net.dries007.tfc.util.rotation.NetworkAction;
 import net.dries007.tfc.util.rotation.Node;
@@ -35,12 +35,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.wrapper.RangedWrapper;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.wrapper.RangedWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,8 +85,7 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
     };
 
     private final Node rotationNode;
-    private LazyOptional<IItemHandler> inventoryCapability = LazyOptional.of(() -> inventory);
-    private LazyOptional<IItemHandler> outputCapability = LazyOptional.of(() -> new RangedWrapper(inventory, OUTPUT_SLOT, OUTPUT_SLOT + 1));
+    private final IItemHandler outputInventory = new RangedWrapper(inventory, OUTPUT_SLOT, OUTPUT_SLOT + 1);
     private float progress;
     private final ContainerData containerData = new ContainerData() {
         @Override
@@ -123,6 +119,10 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
 
     public ItemStackHandler getInventory() {
         return inventory;
+    }
+
+    public IItemHandler getItemHandler(Direction side) {
+        return side == Direction.DOWN ? outputInventory : inventory;
     }
 
     public Optional<PressingRecipe> getMatchingRecipe() {
@@ -316,8 +316,6 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
     @Override
     public void onLoad() {
         super.onLoad();
-        inventoryCapability = LazyOptional.of(() -> inventory);
-        outputCapability = LazyOptional.of(() -> new RangedWrapper(inventory, OUTPUT_SLOT, OUTPUT_SLOT + 1));
         if (level != null && !level.isClientSide) {
             performNetworkAction(NetworkAction.ADD);
         }
@@ -329,32 +327,6 @@ public class GlassPressBlockEntity extends BlockEntity implements MenuProvider, 
             performNetworkAction(NetworkAction.REMOVE);
         }
         super.setRemoved();
-    }
-
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        inventoryCapability.invalidate();
-        outputCapability.invalidate();
-    }
-
-    @Override
-    public void reviveCaps() {
-        super.reviveCaps();
-        inventoryCapability = LazyOptional.of(() -> inventory);
-        outputCapability = LazyOptional.of(() -> new RangedWrapper(inventory, OUTPUT_SLOT, OUTPUT_SLOT + 1));
-    }
-
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-        if (capability == ForgeCapabilities.ITEM_HANDLER) {
-            if (side == Direction.DOWN) {
-                return outputCapability.cast();
-            }
-            return inventoryCapability.cast();
-        }
-
-        return super.getCapability(capability, side);
     }
 
     @Override

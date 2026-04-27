@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkHooks;
 
 public class GlassPressBlock extends HorizontalDirectionalBlock implements EntityBlock {
     public GlassPressBlock(Properties properties) {
@@ -44,7 +43,7 @@ public class GlassPressBlock extends HorizontalDirectionalBlock implements Entit
 
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof GlassPressBlockEntity glassPress && player instanceof ServerPlayer serverPlayer) {
-            NetworkHooks.openScreen(serverPlayer, glassPress, pos);
+            serverPlayer.openMenu(glassPress, pos);
         }
 
         return InteractionResult.CONSUME;

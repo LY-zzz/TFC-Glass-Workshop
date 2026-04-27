@@ -5,7 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.ly.tfcglassworkshop.blockentity.GlassPressBlockEntity;
 import com.ly.tfcglassworkshop.registry.ModRecipeTypes;
-import net.dries007.tfc.common.capabilities.glass.GlassOperation;
+import net.dries007.tfc.common.component.glass.GlassOperation;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;

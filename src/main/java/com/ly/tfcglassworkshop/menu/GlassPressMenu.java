@@ -15,7 +15,7 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.items.SlotItemHandler;
+import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class GlassPressMenu extends AbstractContainerMenu {
     private static final int MACHINE_SLOT_COUNT = GlassPressBlockEntity.SLOT_COUNT;
