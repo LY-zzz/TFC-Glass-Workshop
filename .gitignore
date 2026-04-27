@@ -44,3 +44,8 @@ forge*changelog.txt
 
 # Local texture handoff exports
 /texture_exports/
+
+# Local planning notes
+/TFC玻璃附属mod计划报告.md
+/项目续接摘要.md
+/1.21.1移植计划书.md
