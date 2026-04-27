@@ -1,6 +1,20 @@
 # Changelog
 
-## 0.0.1 - Initial Release Draft
+## 0.0.1 - 1.21.1 NeoForge Port
+
+- Ported to Minecraft `1.21.1`.
+- Ported from Forge to NeoForge `21.1.x`.
+- Updated Java target to `21`.
+- Updated TerraFirmaCraft target to `1.21.1-4.1.0+`.
+- Updated JEI integration for JEI `1.21.1` NeoForge `19.x`.
+- Migrated data pack paths to Minecraft 1.21.1 conventions.
+- Migrated custom pressing recipe serialization to Minecraft 1.21.1 APIs.
+- Migrated mold anvil, clay knapping, and heating recipes to TFC 1.21.1 formats.
+- Replaced old Forge common tags with 1.21.1 `c:` tags where needed.
+- Fixed NeoForge client startup by removing an empty global event bus registration.
+- Verified core gameplay in game: startup, registration, JEI, Field Guide, Glass Press GUI, mechanical power, pressing outputs, powder dyeing, and hopper automation.
+
+## 0.0.1 - 1.20.1 Forge Initial Release
 
 - Added the Glass Press.
 - Added the `tfc_glass_workshop:pressing` recipe type.

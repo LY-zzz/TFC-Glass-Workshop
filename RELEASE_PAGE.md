@@ -38,14 +38,16 @@ For colored glass, the press includes three powder slots and supports the same p
 
 ## Requirements
 
-- Minecraft `1.20.1`
-- Forge `47.x`
-- TerraFirmaCraft `1.20.1-3.1.18+`
-- Java `17`
+- Minecraft `1.21.1`
+- NeoForge `21.1.x`
+- TerraFirmaCraft `1.21.1-4.1.0+`
+- Java `21`
 
 Recommended:
 
-- JEI `15.x`
+- JEI `19.x`
+
+This is the 1.21.1 NeoForge build. It is separate from the 1.20.1 Forge build and should not be used on Minecraft 1.20.1.
 
 ## How To Use
 
@@ -66,7 +68,18 @@ The Glass Press is automation-friendly:
 
 This prevents a hopper below the press from stealing glass batches, molds, or powders.
 
-## First Release Changelog
+## 1.21.1 NeoForge Changelog
+
+- Ported the mod to Minecraft 1.21.1 and NeoForge.
+- Updated runtime target to Java 21.
+- Updated TFC compatibility target to TerraFirmaCraft 1.21.1-4.1.0+.
+- Updated JEI integration for JEI 1.21.1 NeoForge 19.x.
+- Migrated resources to Minecraft 1.21.1 data pack paths.
+- Migrated pressing, mold, heating, knapping, and anvil recipe JSON formats.
+- Updated common tags from old Forge tags to NeoForge/TFC 1.21.1 `c:` tags.
+- Verified core Glass Press gameplay, JEI, Field Guide, mechanical power, powder dyeing, and automation behavior in game.
+
+## Feature Summary
 
 - Added Glass Press
 - Added pressing recipe type
@@ -84,7 +97,7 @@ This prevents a hopper below the press from stealing glass batches, molds, or po
 
 - TerraFirmaCraft
 - TFC
-- Forge
+- NeoForge
 - Glass
 - Survival
 - Tech
@@ -123,3 +136,11 @@ TerraFirmaCraft: Glass Workshop 为 TFC 添加了一台轻量的玻璃压制机�
 - JEI 配方显示
 - 集成进 TFC Field Guide
 - 下方漏斗只会抽出成品，不会抽走原料、模具或粉末
+
+需求：
+
+- Minecraft `1.21.1`
+- NeoForge `21.1.x`
+- TerraFirmaCraft `1.21.1-4.1.0+`
+- Java `21`
+- 推荐安装 JEI `19.x`

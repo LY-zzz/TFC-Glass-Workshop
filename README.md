@@ -1,6 +1,6 @@
 # TerraFirmaCraft: Glass Workshop
 
-TerraFirmaCraft: Glass Workshop is a small Forge add-on for TerraFirmaCraft that adds a TFC-style glass press for batch production of glass products.
+TerraFirmaCraft: Glass Workshop is a small NeoForge add-on for TerraFirmaCraft that adds a TFC-style glass press for batch production of glass products.
 
 The mod keeps the normal TFC glass workflow intact: glass batches still need to be heated with TFC mechanics, molds still matter, and the press needs mechanical power from above. It simply adds a focused machine for turning hot glass batches into blocks, panes, bottles, jars, lamp glass, lenses, and dyed glass in a more repeatable way.
 
@@ -62,25 +62,35 @@ With powders, the press supports the same TFC glassworking color combinations fo
 
 ## Compatibility
 
-Built for:
+Current NeoForge build:
+
+- Minecraft `1.21.1`
+- NeoForge `21.1.x`
+- TerraFirmaCraft `1.21.1-4.1.0+`
+- Java `21`
+
+Legacy Forge line:
 
 - Minecraft `1.20.1`
 - Forge `47.x`
 - TerraFirmaCraft `1.20.1-3.1.18+`
 - Java `17`
 
+The 1.21.1 NeoForge jar and the 1.20.1 Forge jar are separate files. Do not use one jar across both Minecraft versions.
+
 Optional integration:
 
-- JEI `15.x` for recipe display
+- JEI `19.x` on 1.21.1 NeoForge
+- JEI `15.x` on 1.20.1 Forge
 
 ## Development
 
-This project uses ForgeGradle.
+The current port branch uses NeoGradle for Minecraft 1.21.1 + NeoForge.
 
 Common local commands:
 
 ```powershell
-$env:JAVA_HOME='C:\Program Files\Java\jdk-17'
+$env:JAVA_HOME='C:\Program Files\Java\jdk-21'
 $env:PATH="$env:JAVA_HOME\bin;$env:PATH"
 $env:GRADLE_USER_HOME='D:\java\TFC-Glass-Workshop\.gradle-home'
 .\gradlew.bat processResources compileJava
@@ -90,7 +100,7 @@ $env:GRADLE_USER_HOME='D:\java\TFC-Glass-Workshop\.gradle-home'
 
 ## Project Status
 
-Core gameplay is implemented and tested:
+The 1.21.1 NeoForge port has passed core gameplay regression testing:
 
 - Glass Press block, block entity, menu, and GUI
 - Mechanical power requirement
@@ -101,10 +111,10 @@ Core gameplay is implemented and tested:
 - TFC Field Guide integration
 - Bottom hopper output behavior
 
-Before release, the remaining work is mainly packaging polish: final build testing, screenshots, and platform metadata.
+The remaining release work is packaging polish: final jar smoke testing in a clean client instance, screenshots, and platform metadata.
 
 ## License
 
 The mod is currently declared as All Rights Reserved in `gradle.properties`.
 
-Forge MDK notice files are retained for the Forge development environment.
+Forge MDK notice files are retained for the legacy Forge development history.
