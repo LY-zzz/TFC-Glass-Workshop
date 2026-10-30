@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.2 - 1.21.1 NeoForge
+
+- Fixed the Glass Press mold slot accepting stacked molds through item-handler insertion paths. The slot now accepts only one mold.
+- Verified the slot limit in game with manual insertion, shift-click, and automation.
+
 ## 0.0.1 - 1.21.1 NeoForge Port
 
 - Ported to Minecraft `1.21.1`.
