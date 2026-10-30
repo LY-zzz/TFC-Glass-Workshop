@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.0.3 - TFC 4.2.12 Compatibility
+
+- Updated the development and minimum runtime TFC version to `1.21.1-4.2.12`.
+- Updated the development and minimum runtime NeoForge version to `21.1.234`.
+- Redesigned all six Glass Press block faces with 32x32 cast-iron, steel, and brass pixel textures; the block model and gameplay are unchanged.
+- Fixed English and Simplified Chinese Field Guide links to TFC's reorganized heating and glassworking entries.
+- Updated Field Guide temperature text to respect TFC's temperature display setting.
+- Clarified that default pressing recipes require the batch to remain at or above 480 C throughout processing.
+- Unified the internal mod version and manifest version as `0.0.3`, with the generated filename `tfc_glass_workshop-0.0.3+1.21.1-neoforge.jar`.
+- Confirmed the TFC / NeoForge combination passes 173 server-side pressing GameTests. The reported heated-glass pressing failure has not been reproduced; this release does not claim a fix for that unconfirmed issue.
+- Verified the updated Field Guide pages and links, Celsius / Fahrenheit display, Glass Press GUI, cold-input and unpowered-machine checks, and plain / red stained glass output in an isolated development client.
+
 ## 0.0.2 - 1.21.1 NeoForge
 
 - Fixed the Glass Press mold slot accepting stacked molds through item-handler insertion paths. The slot now accepts only one mold.

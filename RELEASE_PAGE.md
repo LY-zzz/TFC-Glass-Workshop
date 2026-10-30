@@ -39,8 +39,8 @@ For colored glass, the press includes three powder slots and supports the same p
 ## Requirements
 
 - Minecraft `1.21.1`
-- NeoForge `21.1.x`
-- TerraFirmaCraft `1.21.1-4.1.0+`
+- NeoForge `21.1.234+` on the `21.1.x` line
+- TerraFirmaCraft `1.21.1-4.2.12+`
 - Java `21`
 
 Recommended:
@@ -49,9 +49,13 @@ Recommended:
 
 This is the 1.21.1 NeoForge build. It is separate from the 1.20.1 Forge build and should not be used on Minecraft 1.20.1.
 
+Release version: `0.0.3`.
+
+File: `tfc_glass_workshop-0.0.3+1.21.1-neoforge.jar`.
+
 ## How To Use
 
-1. Heat a TFC glass batch to at least Faint Red.
+1. Heat a TFC glass batch to at least 480 C (Faint Red) for the default recipes. Keep it at or above that temperature until pressing finishes; the press does not add heat.
 2. Place it in the Glass Press input slot.
 3. Insert a matching press mold.
 4. For dyed glass, add the required powders to the three powder slots.
@@ -68,7 +72,17 @@ The Glass Press is automation-friendly:
 
 This prevents a hopper below the press from stealing glass batches, molds, or powders.
 
-## 1.21.1 NeoForge Changelog
+## 0.0.3 Changelog
+
+- Updated the supported TFC baseline to `1.21.1-4.2.12+` and NeoForge to `21.1.234+`.
+- Redesigned all six Glass Press faces with 32x32 cast-iron, steel, and brass pixel textures; the model and gameplay are unchanged.
+- Fixed English and Simplified Chinese Field Guide links for TFC's reorganized heating and glassworking entries.
+- Updated Field Guide temperature text to follow TFC's temperature display setting.
+- Clarified that glass batches must remain hot throughout pressing.
+- Unified the internal mod version, manifest version, and generated filename for `0.0.3`.
+- The supported TFC / NeoForge combination passed 173 server-side pressing GameTests.
+
+## 1.21.1 Port History
 
 - Ported the mod to Minecraft 1.21.1 and NeoForge.
 - Updated runtime target to Java 21.
@@ -140,7 +154,11 @@ TerraFirmaCraft: Glass Workshop 为 TFC 添加了一台轻量的玻璃压制机�
 需求：
 
 - Minecraft `1.21.1`
-- NeoForge `21.1.x`
-- TerraFirmaCraft `1.21.1-4.1.0+`
+- NeoForge `21.1.234+`（`21.1.x` 系列）
+- TerraFirmaCraft `1.21.1-4.2.12+`
 - Java `21`
 - 推荐安装 JEI `19.x`
+
+当前版本为 `0.0.3`。默认压制配方要求玻璃原料在整个加工过程中保持至少 480 C（淡红）；压制机本身不会加热原料。
+
+`0.0.3` 同时更新了压制机六面的 32x32 像素贴图，采用铸铁、钢和黄铜的机械工坊风格；模型与加工逻辑不变。

@@ -25,7 +25,7 @@ The mod keeps the normal TFC glass workflow intact: glass batches still need to 
 
 ## Basic Workflow
 
-1. Heat a TFC glass batch until it reaches at least Faint Red.
+1. Heat a TFC glass batch to at least 480 C (Faint Red) for the default recipes, and keep it at or above that temperature until pressing finishes.
 2. Place the hot glass batch in the input slot.
 3. Place a press mold in the mold slot.
 4. For dyed glass blocks or panes, place the required TFC glassworking powders in the three powder slots.
@@ -62,12 +62,16 @@ With powders, the press supports the same TFC glassworking color combinations fo
 
 ## Compatibility
 
-Current NeoForge build:
+Current NeoForge build (`0.0.3`):
 
 - Minecraft `1.21.1`
-- NeoForge `21.1.x`
-- TerraFirmaCraft `1.21.1-4.1.0+`
+- NeoForge `21.1.234+` on the `21.1.x` line
+- TerraFirmaCraft `1.21.1-4.2.12+`
 - Java `21`
+
+Version `0.0.3` uses TFC's reorganized Field Guide entries and config-aware temperature display. Earlier Glass Workshop releases retain their own dependency requirements.
+
+The Glass Press also has redesigned 32x32 cast-iron, steel, and brass block textures in `0.0.3`, without changing its model or gameplay.
 
 Legacy Forge line:
 
@@ -98,6 +102,8 @@ $env:GRADLE_USER_HOME='D:\java\TFC-Glass-Workshop\.gradle-home'
 .\gradlew.bat build
 ```
 
+The build produces `build/libs/tfc_glass_workshop-0.0.3+1.21.1-neoforge.jar`.
+
 ## Project Status
 
 The 1.21.1 NeoForge port has passed core gameplay regression testing:
@@ -111,7 +117,11 @@ The 1.21.1 NeoForge port has passed core gameplay regression testing:
 - TFC Field Guide integration
 - Bottom hopper output behavior
 
-The remaining release work is packaging polish: final jar smoke testing in a clean client instance, screenshots, and platform metadata.
+The TFC `4.2.12` / NeoForge `21.1.234` compatibility check passed 173 server-side GameTests covering all 57 pressing recipes with iron, steel, and ceramic molds, plus cold-input and unpowered-machine checks. These tests set temperatures through TFC's heat API; they do not replace client-side GUI and Field Guide checks.
+
+An isolated development-client smoke test also verified the updated English and Chinese Field Guide pages, heating and glassworking links, 480 C / 896 F display, the Glass Press GUI, cold-input and unpowered-machine checks, and plain and red stained glass output. Heat was initialized through TFC's heat component for this test.
+
+Before publishing `0.0.3`, perform a final packaged-jar smoke test in a clean client instance and prepare platform metadata.
 
 ## License
 

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)玻璃压制机$()可以将高温的 TFC 玻璃原料借助模具压制成成品。它本身不会加热玻璃，请先进行$(l:tfc:mechanics/heating)加热$()。压制机需要从顶部接入 TFC 传动杆或齿轮箱提供的$(l:tfc:mechanics/mechanical_power)机械动力$()；转速越快，压制越快。"
+      "text": "$(thing)玻璃压制机$()可以将高温的 TFC 玻璃原料借助模具压制成成品。它本身不会加热玻璃，请先进行$(l:tfc:core_mechanics/heating)加热$()。压制机需要从顶部接入 TFC 传动杆或齿轮箱提供的$(l:tfc:mechanics/mechanical_power)机械动力$()；转速越快，压制越快。"
     },
     {
       "type": "patchouli:crafting",
@@ -16,7 +16,12 @@
     {
       "type": "patchouli:text",
       "title": "\u538b\u5236\u6d41\u7a0b",
-      "text": "1、将$(l:tfc:mechanics/glassworking)玻璃原料$()加热到至少$(4)$(bold)淡红$()。$(br)2、将高温原料放入输入槽。$(br)3、将模具放入模具槽。$(br)4、需要染色玻璃时，将对应粉末放入上方的 3 个粉末槽。$(br)5、让顶部传动输入保持转动，并从输出槽取出成品。"
+      "text": "1、将$(l:tfc:crafting/glassworking)玻璃原料$()加热到至少$(cfg:heat:480)$()。$(br)2、将高温原料放入输入槽。$(br)3、将模具放入模具槽。$(br)4、需要染色玻璃时，将对应粉末放入上方的 3 个粉末槽。$(br)5、让顶部传动输入保持转动，并从输出槽取出成品。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "温度",
+      "text": "默认配方要求玻璃原料在整个压制过程中保持至少$(cfg:heat:480)$()。压制机本身不会加热；若原料冷却到要求温度以下，需重新加热后再试。自定义配方可能要求不同温度，请以 JEI 中的配方为准。"
     },
     {
       "type": "patchouli:text",
